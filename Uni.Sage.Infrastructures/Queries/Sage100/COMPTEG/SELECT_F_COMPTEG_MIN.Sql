@@ -1,0 +1,1 @@
+﻿SELECT  CG.CG_Num CompteCollectif,CG_Intitule Intitule, CG.N_Nature TiersNature ,CG.CG_Analytique  FROM F_COMPTEG CG

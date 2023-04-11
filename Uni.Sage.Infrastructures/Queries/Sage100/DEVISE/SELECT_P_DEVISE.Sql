@@ -1,0 +1,1 @@
+﻿SELECT cbIndice Indice, D_Intitule Intitule ,D_Cours,D_CodeISO Code FROM P_DEVISE  where len(D_Intitule)>0

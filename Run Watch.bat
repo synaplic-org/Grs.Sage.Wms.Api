@@ -1,0 +1,1 @@
+dotnet watch --project Grs.Sage.Wms.Api  run --urls=http://localhost:5050/

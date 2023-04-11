@@ -1,0 +1,1 @@
+﻿select R_Intitule mode ,cbIndice Id from P_REGLEMENT

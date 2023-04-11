@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "BIJOU",
+    "Version": "100c8",
+    "ConnectionString": "Server=192.168.1.98;Database=BIJOU;Integrated Security=True; MultipleActiveResultSets=True"
+  },
+  {
+    "Name": "IPHADERM",
+    "Version": "100c8",
+    "ConnectionString": "Server=192.168.1.98; Database=IPHADERM;Integrated Security=True; MultipleActiveResultSets=True;"
+  },
+  {
+    "Name": "IPHABIOTICS",
+    "Version": "100c6",
+    "ConnectionString": "Server=192.168.1.98; Database=IPHABIOTICS;Integrated SecSurity=True; MultipleActiveResultSets=True;"
+  },
+  {
+    "Name": "SALVA",
+    "Version": "100c6",
+    "ConnectionString": "Server=192.168.1.98; Database=SALVA;Integrated Security=True; MultipleActiveResultSets=True;"
+  }
+]
