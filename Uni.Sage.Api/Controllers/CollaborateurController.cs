@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grs.Sage.Wms.Api.Services;
 using Uni.Sage.Shared.Wrapper;
+using Uni.Sage.Domain.Entities;
 
 namespace Grs.Sage.Wms.Api.Controllers
     {
@@ -20,10 +21,10 @@ namespace Grs.Sage.Wms.Api.Controllers
 
 
             [HttpGet(nameof(GetCollaborateur))]
-            public async Task<ActionResult> GetCollaborateur(string pConnexionName)
+            public async Task<Result<List<CollaborateurResponse>>> GetCollaborateur(string pConnexionName)
             {
                 var result = await _CollaborateurService.GetCollaborateur(pConnexionName);
-                return Ok(result);
+                return result;
             }
         }
     }

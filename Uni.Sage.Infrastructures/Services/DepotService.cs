@@ -12,7 +12,7 @@ namespace Grs.Sage.Wms.Api.Services
 {
     public interface IDepotService
     {
-        Task<IResult<List<DepotResponse>>> GetDepots(string pConnexionName);
+        Task<Result<List<DepotResponse>>> GetDepots(string pConnexionName);
     }
 
     public class DepotService : IDepotService
@@ -24,7 +24,7 @@ namespace Grs.Sage.Wms.Api.Services
             _QueryService = queryService;
         }
 
-        public async Task<IResult<List<DepotResponse>>> GetDepots(string pConnexionName)
+        public async Task<Result<List<DepotResponse>>> GetDepots(string pConnexionName)
         {
             try
             {

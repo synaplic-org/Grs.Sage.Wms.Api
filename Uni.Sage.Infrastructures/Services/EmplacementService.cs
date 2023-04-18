@@ -11,7 +11,7 @@ namespace Grs.Sage.Wms.Api.Services
 {
     public interface IEmplacementService
     {
-        Task<IResult<List<EmplacementResponse>>> GetEmplacements(string pConnexionName);
+        Task<Result<List<EmplacementResponse>>> GetEmplacements(string pConnexionName);
     }
     public class EmplacementService : IEmplacementService
     {
@@ -22,7 +22,7 @@ namespace Grs.Sage.Wms.Api.Services
             _QueryService = queryService;
         }
 
-        public async Task<IResult<List<EmplacementResponse>>> GetEmplacements(string pConnexionName)
+        public async Task<Result<List<EmplacementResponse>>> GetEmplacements(string pConnexionName)
         {
             try
             {

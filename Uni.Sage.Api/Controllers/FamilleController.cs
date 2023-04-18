@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Grs.Sage.Wms.Api.Services;
+using System.Collections.Generic;
+using Uni.Sage.Domain.Entities;
+using Uni.Sage.Shared.Wrapper;
 
 namespace Grs.Sage.Wms.Api.Controllers
 {
@@ -15,10 +18,10 @@ namespace Grs.Sage.Wms.Api.Controllers
 
 
         [HttpGet(nameof(GetFamilles))]
-        public async Task<ActionResult> GetFamilles(string pConnexionName)
+        public async Task<Result<List<FamilleResponse>>> GetFamilles(string pConnexionName)
         {
             var result = await _FamilleService.GetFamilles(pConnexionName);
-            return Ok(result);
+            return result;
         }
     }
 }

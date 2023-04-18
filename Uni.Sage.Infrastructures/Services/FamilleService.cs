@@ -12,7 +12,7 @@ namespace Grs.Sage.Wms.Api.Services
 {
     public interface IFamilleService
     {
-        Task<IResult<List<FamilleResponse>>> GetFamilles(string pConnexionName);
+        Task<Result<List<FamilleResponse>>> GetFamilles(string pConnexionName);
     }
     public class FamilleService: IFamilleService
     {
@@ -23,7 +23,7 @@ namespace Grs.Sage.Wms.Api.Services
             _QueryService = queryService;
         }
 
-        public async Task<IResult<List<FamilleResponse>>> GetFamilles(string pConnexionName)
+        public async Task<Result<List<FamilleResponse>>> GetFamilles(string pConnexionName)
         {
             try
             {

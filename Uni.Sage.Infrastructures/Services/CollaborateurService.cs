@@ -12,7 +12,7 @@ namespace Grs.Sage.Wms.Api.Services
 {
     public interface ICollaborateurService
     {
-        Task<IResult<List<CollaborateurResponse>>> GetCollaborateur(string pConnexionName);
+        Task<Result<List<CollaborateurResponse>>> GetCollaborateur(string pConnexionName);
     }
 
     public class CollaborateurService : ICollaborateurService
@@ -26,7 +26,7 @@ namespace Grs.Sage.Wms.Api.Services
             _QueryService = queryService;
         }
 
-        public async Task<IResult<List<CollaborateurResponse>>> GetCollaborateur(string pConnexionName)
+        public async Task<Result<List<CollaborateurResponse>>> GetCollaborateur(string pConnexionName)
         {   
             try
             {

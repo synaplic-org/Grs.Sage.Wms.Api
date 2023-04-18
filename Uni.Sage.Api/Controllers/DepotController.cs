@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Grs.Sage.Wms.Api.Services;
+using System.Collections.Generic;
+using Uni.Sage.Domain.Entities;
+using Uni.Sage.Shared.Wrapper;
 
 namespace Grs.Sage.Wms.Api.Controllers
 {
@@ -17,10 +20,10 @@ namespace Grs.Sage.Wms.Api.Controllers
 
 
         [HttpGet(nameof(GetDepots))]
-        public async Task<ActionResult> GetDepots(string pConnexionName)
+        public async Task<Result<List<DepotResponse>>> GetDepots(string pConnexionName)
         {
             var result = await _DepotService.GetDepots(pConnexionName);
-            return Ok(result);
+            return result;
         }
     }
 }

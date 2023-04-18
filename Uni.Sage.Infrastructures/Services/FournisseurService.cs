@@ -16,7 +16,7 @@ namespace Uni.Sage.Infrastructures.Services
 {
     public interface IFournisseurService
     {
-        Task<IResult<List<FournisseurResponce>>> GetFournisseurs(string pConnexionName);
+        Task<Result<List<FournisseurResponce>>> GetFournisseurs(string pConnexionName);
 
     }
     public class FournisseurService : IFournisseurService
@@ -28,7 +28,7 @@ namespace Uni.Sage.Infrastructures.Services
             _QueryService = queryService;
         }
 
-        public async Task<IResult<List<FournisseurResponce>>> GetFournisseurs(string pConnexionName)
+        public async Task<Result<List<FournisseurResponce>>> GetFournisseurs(string pConnexionName)
         {
 
             try
