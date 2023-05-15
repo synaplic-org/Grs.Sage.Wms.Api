@@ -4,6 +4,7 @@ using Grs.Sage.Wms.Api.Services;
 using System.Collections.Generic;
 using Uni.Sage.Domain.Entities;
 using Uni.Sage.Shared.Wrapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Grs.Sage.Wms.Api.Controllers
 {
@@ -18,8 +19,8 @@ namespace Grs.Sage.Wms.Api.Controllers
 
         }
 
-
-        [HttpGet(nameof(GetDepots))]
+		[AllowAnonymous]
+		[HttpGet(nameof(GetDepots))]
         public async Task<Result<List<DepotResponse>>> GetDepots(string pConnexionName)
         {
             var result = await _DepotService.GetDepots(pConnexionName);

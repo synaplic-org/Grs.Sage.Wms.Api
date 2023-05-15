@@ -34,6 +34,7 @@
     <None Remove="Queries\Sage100\CATTARIF\SELECT_CATTARIF_BY_ID.Sql" />
     <None Remove="Queries\Sage100\CLIENT\SELECT_CLIENT.Sql" />
     <None Remove="Queries\Sage100\CLIENT\SELECT_CLIENT_BYID.Sql" />
+    <None Remove="Queries\Sage100\CLIENT\SELECT_CLIENT_FOURNISSEUR.Sql" />
     <None Remove="Queries\Sage100\COLLABORATEUR\SELECT_COLLABORATEUR.Sql" />
     <None Remove="Queries\Sage100\COLLABORATEUR\SELECT_COLLABORATEUR_BY_ID.Sql" />
     <None Remove="Queries\Sage100\COLLABORATEUR\SELECT_COLLABORATEUR_MIN.Sql" />
@@ -48,10 +49,10 @@
     <None Remove="Queries\Sage100\DEVIS\INSERT_F_DOCENTETE.Sql" />
     <None Remove="Queries\Sage100\DEVIS\INSERT_F_DOCLIGNE.Sql" />
     <None Remove="Queries\Sage100\DEVIS\SELECT_COUNT_DLNO.Sql" />
-    <None Remove="Queries\Sage100\DEVIS\SELECT_DEVIS_ENTETE_ACHAT.Sql" />
     <None Remove="Queries\Sage100\DEVIS\SELECT_DEVIS_ENTETE_VENTE.Sql" />
     <None Remove="Queries\Sage100\DEVIS\SELECT_DEVIS_LIGNE_ACHAT.Sql" />
     <None Remove="Queries\Sage100\DEVIS\SELECT_DEVIS_LIGNE_VENTE.Sql" />
+    <None Remove="Queries\Sage100\DEVIS\SELECT_ENTETE_ACHAT.Sql" />
     <None Remove="Queries\Sage100\DOCENTETE\SELECT_F_DOCCURRENTPIECE.Sql" />
     <None Remove="Queries\Sage100\DOCENTETE\SELECT_F_DOCENTETE.Sql" />
     <None Remove="Queries\Sage100\DOCENTETE\UPDATE_F_DOCCURRENTPIECE.Sql" />
@@ -110,6 +111,7 @@
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_CLIENT_ARTICLE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\CATTARIF\SELECT_CATTARIF.Sql" />
     <EmbeddedResource Include="Queries\Sage100\CATTARIF\SELECT_CATTARIF_BY_ID.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\CLIENT\SELECT_CLIENT_FOURNISSEUR.Sql" />
     <EmbeddedResource Include="Queries\Sage100\CLIENT\SELECT_CLIENT.Sql" />
     <EmbeddedResource Include="Queries\Sage100\CLIENT\SELECT_CLIENT_BYID.Sql" />
     <EmbeddedResource Include="Queries\Sage100\COLLABORATEUR\SELECT_COLLABORATEUR_BY_ID.Sql" />
@@ -123,7 +125,7 @@
     <EmbeddedResource Include="Queries\Sage100\DEPOT\SELECT_DEPOT.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DEVISE\SELECT_P_DEVISE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DEVISE\SELECT_P_DEVISE_BY_CODE.Sql" />
-    <EmbeddedResource Include="Queries\Sage100\DEVIS\SELECT_DEVIS_ENTETE_ACHAT.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\DEVIS\SELECT_ENTETE_ACHAT.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DEVIS\SELECT_DEVIS_ENTETE_VENTE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DEVIS\SELECT_DEVIS_LIGNE_ACHAT.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DEVIS\SELECT_DEVIS_LIGNE_VENTE.Sql" />

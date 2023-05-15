@@ -27,5 +27,6 @@ namespace Uni.Sage.Domain.Entities
         public string Collaborateur { get; set; }
         public int CodeDepot { get; set; }
         public string Depot { get; set; }
+        public int Type { get; set; }
     }
 }

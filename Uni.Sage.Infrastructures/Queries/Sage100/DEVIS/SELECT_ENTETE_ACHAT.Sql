@@ -8,4 +8,4 @@ left outer join F_COLLABORATEUR coll on coll.CO_No = ent.CO_no
 left outer join F_COMPTEA aff on aff.CA_Num = ent.CA_Num
 left outer join P_SOUCHEVENTE sch on sch.cbIndice = DO_Souche +1
 left outer join F_COMPTEG cpt on cpt.CG_Num = ent.CG_Num
-where DO_Domaine = 1 and DO_Type = 0
+where DO_Domaine = 1 and DO_Type = 12

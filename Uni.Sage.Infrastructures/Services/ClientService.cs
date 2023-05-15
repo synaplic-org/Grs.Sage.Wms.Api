@@ -14,6 +14,7 @@ namespace Grs.Sage.Wms.Api.Services
     public interface IClientService
     {
         Task<IResult<List<ClientResponse>>> GetClients(string pConnexionName);
+        Task<IResult<List<ClientResponse>>> GetComptet(string pConnexionName);
         Task<IResult<List<ClientResponse>>> GetClientsById(string pConnexionName, string CodeClient);
     }
     public class ClientService : IClientService
@@ -39,6 +40,24 @@ namespace Grs.Sage.Wms.Api.Services
             catch (System.Exception ex)
             {
                 Log.Fatal(ex, " Get Clients societe {0}  error : {1}", pConnexionName, ex.ToString());
+                return await Result<List<ClientResponse>>.FailAsync(ex);
+            }
+
+        }
+        public async Task<IResult<List<ClientResponse>>> GetComptet(string pConnexionName)
+        {
+
+            try
+            {
+                using var db = _QueryService.NewDbConnection(pConnexionName);
+                var oQuery = _QueryService.GetQuery("SELECT_CLIENT_FOURNISSEUR");
+                var results = await db.QueryAsync<ClientResponse>(oQuery);
+
+                return await Result<List<ClientResponse>>.SuccessAsync(results.ToList());
+            }
+            catch (System.Exception ex)
+            {
+                Log.Fatal(ex, " Get Clients & Fournisseur societe {0}  error : {1}", pConnexionName, ex.ToString());
                 return await Result<List<ClientResponse>>.FailAsync(ex);
             }
 

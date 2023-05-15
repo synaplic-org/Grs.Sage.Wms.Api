@@ -12,7 +12,9 @@ namespace Grs.Sage.Wms.Api
             services.AddScoped<IQueryService, QueryService>();
             services.AddScoped<IArticleService, ArticleService>();
             services.AddScoped<IClientService, ClientService>();
-            services.AddScoped<ICollaborateurService, CollaborateurService>();
+			services.AddScoped<IDocEnteteService, DocEnteteService>();
+			services.AddScoped<IDocLigneService, DocLigneService>();
+			services.AddScoped<ICollaborateurService, CollaborateurService>();
             services.AddScoped<IDepotService, DepotService>();
             services.AddScoped<IEmplacementService, EmplacementService>();
             services.AddScoped<IFamilleService, FamilleService>();

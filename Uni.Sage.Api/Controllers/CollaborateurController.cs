@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Grs.Sage.Wms.Api.Services;
 using Uni.Sage.Shared.Wrapper;
 using Uni.Sage.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Grs.Sage.Wms.Api.Controllers
     {
@@ -19,8 +20,8 @@ namespace Grs.Sage.Wms.Api.Controllers
 
             }
 
-
-            [HttpGet(nameof(GetCollaborateur))]
+		[AllowAnonymous]
+		[HttpGet(nameof(GetCollaborateur))]
             public async Task<Result<List<CollaborateurResponse>>> GetCollaborateur(string pConnexionName)
             {
                 var result = await _CollaborateurService.GetCollaborateur(pConnexionName);

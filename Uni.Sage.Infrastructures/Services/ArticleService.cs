@@ -26,7 +26,6 @@ namespace Grs.Sage.Wms.Api.Services
     {
        
         private readonly IQueryService _QueryService;
-
         public ArticleService(IQueryService queryService)
         {
             

@@ -4,6 +4,7 @@ using Grs.Sage.Wms.Api.Services;
 using System.Collections.Generic;
 using Uni.Sage.Domain.Entities;
 using Uni.Sage.Shared.Wrapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Grs.Sage.Wms.Api.Controllers
 {
@@ -19,7 +20,8 @@ namespace Grs.Sage.Wms.Api.Controllers
         }
 
 
-        [HttpGet(nameof(GetEmplacements))]
+		[AllowAnonymous]
+		[HttpGet(nameof(GetEmplacements))]
         public async Task<Result<List<EmplacementResponse>>> GetEmplacements(string pConnexionName)
         {
             var result = await _EmplacementService.GetEmplacements(pConnexionName);

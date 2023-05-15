@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Grs.Sage.Wms.Api.Services;
 using Uni.Sage.Domain.Entities;
 using Uni.Sage.Shared.Wrapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Grs.Sage.Wms.Api.Controllers
 {
@@ -19,7 +20,7 @@ namespace Grs.Sage.Wms.Api.Controllers
 
         }
 
-       
+        [AllowAnonymous]
         [HttpGet(nameof(GetArticles))]
         public async Task<Result<List<ArticleResponse>>> GetArticles(string pConnexionName)
         {

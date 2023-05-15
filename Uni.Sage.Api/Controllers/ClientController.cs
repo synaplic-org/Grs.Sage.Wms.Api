@@ -7,6 +7,7 @@ using Grs.Sage.Wms.Api.Services;
 using Uni.Sage.Domain.Entities;
 using Uni.Sage.Shared.Filter;
 using Uni.Sage.Shared.Wrapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Grs.Sage.Wms.Api.Controllers
 {
@@ -21,12 +22,19 @@ namespace Grs.Sage.Wms.Api.Controllers
 
         }
 
-
-        [HttpGet(nameof(GetClients))]
+		[AllowAnonymous]
+		[HttpGet(nameof(GetClients))]
         public async Task<IResult<List<ClientResponse>>> GetClients(string pConnexionName)
         {
             var result = await _ClientService.GetClients(pConnexionName);
             return result;  
+        }
+		[AllowAnonymous]
+		[HttpGet(nameof(GetComptet))]
+        public async Task<IResult<List<ClientResponse>>> GetComptet(string pConnexionName)
+        {
+            var result = await _ClientService.GetComptet(pConnexionName);
+            return result;
         }
 
         //[HttpGet]
