@@ -13,11 +13,11 @@ namespace Grs.Sage.Wms.Api.Controllers
     [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
     public class BaseController : ControllerBase
     {
-     
+    
 
         public BaseController()
         {
-           //mQueryService = (IQueryService)HttpContext.RequestServices.GetService(typeof(  IQueryService));
+           //QueryService = (IQueryService)HttpContext.RequestServices.GetService(typeof(IQueryService));
         }
     }
 }

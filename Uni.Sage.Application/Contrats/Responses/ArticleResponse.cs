@@ -13,6 +13,7 @@ namespace Uni.Sage.Domain.Entities
         public string Famille { get; set; }
         public string CodeFamille { get; set; }
         public short EnSommiel { get; set; }
+        public int TEST { get; set; }
         public int SuiviStock { get; set; }
         public decimal PoidsBrut { get; set; }
         public decimal PoidsNet { get; set; }

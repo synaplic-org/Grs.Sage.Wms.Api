@@ -25,7 +25,7 @@ namespace Uni.Sage.Application.Contrats.Responses
 		public string Reference { get; set; }
 		public string CodeArticle { get; set; }
 		public string Designation { get; set; }
-		public string Quantite { get; set; }
+		public decimal Quantite { get; set; }
 		public decimal Remise1 { get; set; }
 		public decimal Remise2 { get; set; }
 		public decimal Remise3 { get; set; }

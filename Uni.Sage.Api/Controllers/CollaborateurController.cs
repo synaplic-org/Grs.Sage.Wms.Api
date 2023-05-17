@@ -17,15 +17,13 @@ namespace Grs.Sage.Wms.Api.Controllers
             {
 
                 _CollaborateurService = CollaborateurService;
-
             }
 
-		[AllowAnonymous]
-		[HttpGet(nameof(GetCollaborateur))]
+		    [AllowAnonymous]
+		    [HttpGet(nameof(GetCollaborateur))]
             public async Task<Result<List<CollaborateurResponse>>> GetCollaborateur(string pConnexionName)
             {
-                var result = await _CollaborateurService.GetCollaborateur(pConnexionName);
-                return result;
+                return await _CollaborateurService.GetCollaborateur(pConnexionName);
             }
         }
     }

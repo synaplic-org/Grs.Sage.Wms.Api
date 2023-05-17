@@ -1,6 +1,6 @@
 ﻿select DO_DOmaine Domaine,DO_Type Type,DO_Piece Piece,DO_Date DatePiece,DO_Ref Reference,
 ligne.AR_Ref CodeArticle,DL_Design Designation,DL_Qte Quantite,DL_no NumeroSerie,isnull(ls.LS_NoSerie,' ')LotSerie,
-ls.LS_Peremption DatePeremption, DL_Remise01REM_Valeur Remise1,
+isnull(ls.LS_Peremption,'01/01/1753') DatePeremption, DL_Remise01REM_Valeur Remise1,
 DL_Remise02REM_Valeur Remise2,DL_Remise03REM_Valeur Remise3,isnull(DL_PrixUnitaire,0) PrixUnitaire,
 CT_Num CodeClient,
 ligne.CO_No CodeCollaborateur,
@@ -11,6 +11,7 @@ inner join F_DEPOT dpt on dpt.DE_No = ligne.DE_No
 left outer join F_LOTSERIE ls on ls.DL_NoIn = ligne.DL_No
 left outer join F_COLLABORATEUR coll on coll.CO_No = ligne.CO_no
 where DO_Domaine in(0,1) and DO_Type in(12,3)
+
 
 
 

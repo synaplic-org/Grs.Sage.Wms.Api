@@ -22,7 +22,6 @@ namespace Grs.Sage.Wms.Api.Services
 
         public CollaborateurService(  IQueryService queryService)
         {
-          
             _QueryService = queryService;
         }
 
@@ -30,9 +29,6 @@ namespace Grs.Sage.Wms.Api.Services
         {   
             try
             {
-
-                
-
                 using var db = _QueryService.NewDbConnection(pConnexionName);
                 var oQuery = _QueryService.GetQuery("SELECT_COLLABORATEUR_MIN");
                 var results = await db.QueryAsync<CollaborateurResponse>(oQuery);
