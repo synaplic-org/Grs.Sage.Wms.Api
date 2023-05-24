@@ -8,11 +8,11 @@ namespace Uni.Sage.Domain.Entities
 {
     public class FamilleResponse
     {
-        public string CodeFamille { get; set; }
+        public string CodeErp { get; set; }
         public string Intitule { get; set; }
         public int Type { get; set; }
         public string TypeDescription { get; set; }
-        public string FamilleCentrale { get; set; }
+        public string FamilyCentral { get; set; }
 
 
     }

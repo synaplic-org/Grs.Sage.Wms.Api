@@ -8,9 +8,9 @@ namespace Uni.Sage.Domain.Entities
 {
     public class EmplacementResponse
     {
-        public int CodeEmplacement { get; set; }
-        public string Depot { get; set; }
-        public string Code { get; set; }
-        public string Intitule { get; set; }
+        public int ErpID { get; set; }
+        public int WareHouseId { get; set; }
+        public string ErpCode { get; set; }
+        public string Name { get; set; }
     }
 }
