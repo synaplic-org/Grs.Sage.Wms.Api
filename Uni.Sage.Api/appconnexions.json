@@ -2,7 +2,7 @@
   {
     "Name": "BIJOU",
     "Version": "100c8",
-    "ConnectionString": "Server=.;Database=BIJOU;Integrated Security=True; MultipleActiveResultSets=True"
+    "ConnectionString": "Server=LAB-LAGAICHI\\SAGE100;Database=BIJOU;Integrated Security=True; MultipleActiveResultSets=True"
   },
   {
     "Name": "IPHADERM",
@@ -19,4 +19,4 @@
     "Version": "100c6",
     "ConnectionString": "Server=192.168.1.98; Database=SALVA;Integrated Security=True; MultipleActiveResultSets=True;"
   }
-]
+] 

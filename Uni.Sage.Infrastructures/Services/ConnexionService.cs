@@ -117,7 +117,7 @@ namespace Grs.Sage.Wms.Api.Services
             // Determine path
 
             var assembly = Assembly.GetExecutingAssembly();
-            //var lisResources = assembly.GetManifestResourceNames();
+            var lisResources = assembly.GetManifestResourceNames();
 
             return assembly.GetManifestResourceNames().Where(o => o.Contains("Sage100") && o.EndsWith(".Sql")).Select(o => o.Substring(o.IndexOf("Sage100"))).ToList();
         }

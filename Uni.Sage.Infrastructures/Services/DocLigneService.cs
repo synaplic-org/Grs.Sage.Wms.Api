@@ -14,12 +14,13 @@ namespace Uni.Sage.Infrastructures.Services
 {
 	
 		public interface IDocLigneService
-	{
+	    {
 			Task<Result<List<DocligneResponse>>> GetDocLigne(string pConnexionName);
-		}
+        Task<Result<List<DocligneResponse>>> GetDocLigneByType(string pConnexionName,string Type, string ComHeaderId);
+        }
 
 		public class DocLigneService : IDocLigneService
-	{
+      	{
 			private readonly IQueryService _QueryService;
 
 			public DocLigneService(IQueryService queryService)
@@ -45,6 +46,25 @@ namespace Uni.Sage.Infrastructures.Services
 				}
 
 			}
-		}
+        public async Task<Result<List<DocligneResponse>>> GetDocLigneByType(string pConnexionName,string Type, string ComHeaderId)
+        {
+            try
+            {
+
+                using var db = _QueryService.NewDbConnection(pConnexionName);
+                var parameters = new { Type = Type, ComHeaderId = ComHeaderId };
+                var oQuery = _QueryService.GetQuery("SELECT_F_DOCLIGNE_MIN");
+                var results = await db.QueryAsync<DocligneResponse>(oQuery, parameters);
+
+                return await Result<List<DocligneResponse>>.SuccessAsync(results.ToList());
+            }
+            catch (System.Exception ex)
+            {
+                Log.Fatal(ex, " Get Depots societe {0}  error : {1}", pConnexionName, ex.ToString());
+                return await Result<List<DocligneResponse>>.FailAsync(ex);
+            }
+
+        }
+    }
 	
 }

@@ -11,7 +11,7 @@ namespace Uni.Sage.Domain.Entities
         public string ErpID { get; set; }
         public string Name { get; set; }
         public int PartyType { get; set; }
-        public string CollectiveAccount { get; set; }
+        //public string CollectiveAccount { get; set; }
         public string Tarif { get; set; }
         public string Contact { get; set; }
 

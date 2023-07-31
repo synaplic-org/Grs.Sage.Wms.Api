@@ -28,8 +28,14 @@ namespace Grs.Sage.Wms.Api.Controllers
 			var result = await _DocLigneService.GetDocLigne(pConnexionName);
 			return result;
 		}
+        [AllowAnonymous]
+        [HttpGet(nameof(GetDocLignesByType))]
+        public async Task<Result<List<DocligneResponse>>> GetDocLignesByType(string pConnexionName,string Type,string ComHeaderId)
+        {
+            var result = await _DocLigneService.GetDocLigneByType(pConnexionName, Type, ComHeaderId);
+            return result;
+        }
 
 
-
-	}
+    }
 }

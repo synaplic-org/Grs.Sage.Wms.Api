@@ -2,7 +2,7 @@
        client.CT_num ErpID,
        client.CT_Intitule Name,
      client.CT_Type PartyType,
-       client.CG_NumPrinc CollectiveAccount,
+       --client.CG_NumPrinc CollectiveAccount,
        trf.CT_Intitule Tarif,
        client.CT_Contact Contact,
        client.CT_Telephone Telephone,

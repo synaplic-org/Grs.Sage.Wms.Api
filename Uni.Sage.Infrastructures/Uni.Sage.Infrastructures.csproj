@@ -57,6 +57,7 @@
     <None Remove="Queries\Sage100\DOCENTETE\SELECT_F_DOCENTETE.Sql" />
     <None Remove="Queries\Sage100\DOCENTETE\UPDATE_F_DOCCURRENTPIECE.Sql" />
     <None Remove="Queries\Sage100\DOCLIGNE\SELECT_F_DOCLIGNE.Sql" />
+    <None Remove="Queries\Sage100\DOCLIGNE\SELECT_F_DOCLIGNE_MIN.Sql" />
     <None Remove="Queries\Sage100\DOCREGLE\INSERT_F_DOCREGL.Sql" />
     <None Remove="Queries\Sage100\DOCUMENT\SELECT_DOCCURRENT_PIECE_DEVIS_VENTE.Sql" />
     <None Remove="Queries\Sage100\DOCUMENT\UPDATE_DOCCURRENT_PIECE_DEVIS_VENTE.Sql" />
@@ -91,6 +92,17 @@
     <None Remove="Queries\Sage100\TAXE\SELECT_TAXE_ARTICLE_FAM.Sql" />
     <None Remove="Queries\Sage100\TIERS\INSERT_CONTACTT.Sql" />
     <None Remove="Queries\Template.Sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Objets100cLib">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>7</VersionMajor>
+      <Guid>8b42efd1-11de-4af5-8f95-2901702d7a46</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Queries\Sage100c5\COLLABORATEUR\SELECT_COLLABORATEUR_MIN.Sql" />
@@ -132,6 +144,7 @@
     <EmbeddedResource Include="Queries\Sage100\DOCENTETE\SELECT_F_DOCENTETE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DOCENTETE\UPDATE_F_DOCCURRENTPIECE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DOCENTETE\SELECT_F_DOCCURRENTPIECE.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\DOCLIGNE\SELECT_F_DOCLIGNE_MIN.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DOCLIGNE\SELECT_F_DOCLIGNE_MAX_DL_NO.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DOCENTETE\INSERT_F_DOCENTETE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DOCLIGNE\INSERT_F_DOCLIGNE.Sql" />
@@ -186,7 +199,6 @@
     <Folder Include="Helper\" />
     <Folder Include="Queries\Sage100c5\ARTICLE\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup Condition="$(VisualStudioVersion) == '17.0'">
     <Reference Include="Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>$(SSDTPath)\Microsoft.Data.Tools.Schema.Sql.dll</HintPath>
