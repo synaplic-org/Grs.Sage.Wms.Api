@@ -58,7 +58,7 @@ namespace Grs.Sage.Wms.Api
                                     IBOArticleDepotLot pArtDepotLot = (IBOArticleDepotLot)pArtDepot.FactoryArticleDepotLot.Create();
                                     // Création d'un lot/série pour la ligne
                                     IUserLot pUserLot = pTransfo.UserLotsToUse[pLig].AddNew();// Description; /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-                                    ;
+                                    
 
 
                                     pTransfo.UserLotsToUse[pLig].AddNew();

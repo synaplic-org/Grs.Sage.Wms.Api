@@ -18,7 +18,8 @@ namespace Uni.Sage.Infrastructures.Services
 		public interface IDocEnteteService
 		{
 			Task<Result<List<DocEnteteResponse>>> GetDocEntete(string pConnexionName);
-		}
+            string TransformerBl(DocumentVente Commande);
+        }
 
 		public class DocEnteteService : IDocEnteteService
 		{
@@ -146,6 +147,123 @@ namespace Uni.Sage.Infrastructures.Services
                 // Fermeture de la connexion
                 CloseBase(ref oCial);
             }
+        }
+        public string  TransformerBl(DocumentVente Commande)
+        {
+            var oNumPieceBl = "";
+            Exception mEx = null;
+            try
+            {
+
+                // MsgBox("Instanciation de l'objet base commercial ")
+                BSCIALApplication100c oCial;
+                // emplacement du fichier commercial 
+                // Dim sPathGcm As String = "C:\Temp\Bijou.gcm"
+
+                oCial = new BSCIALApplication100c();
+                try
+                {
+                    // 
+
+                    // MsgBox("Ouverture de la base ")
+                    if (OpenBase(ref oCial, sPathGcm))
+                    {
+                        // Création du processus Commander 
+                        IPMDocTransformer pTransfo = oCial.Transformation.Vente.CreateProcess_Livrer();
+                        // Si le devis DE00036 existe 
+                        if (oCial.FactoryDocumentVente.ExistPiece(DocumentType.DocumentTypeVenteCommande, Commande.NumPiece))
+                        {
+                            // Sélection du devis DE00036 
+                            IBODocumentVente3 pDoc = oCial.FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteCommande, Commande.NumPiece);
+                            // Si le document contient au moins une ligne 
+                            if (pDoc.FactoryDocumentLigne.List.Count > 0)
+                            {
+                                // Sélection de la première ligne du devis 
+                                if (Commande.LgDocument.Sum(o => o.Qte - o.QteALivre) != 0)
+                                {
+                                    foreach (IBODocumentVenteLigne3 Plign3 in pDoc.FactoryDocumentLigne.List)
+                                    {
+                                        if (Plign3.Article != null)
+                                        {
+                                            var sligne = Plign3;
+                                            var oligne = Commande.LgDocument.FirstOrDefault(oi => oi.Refrence == sligne.Article.AR_Ref & oi.Qte == Convert.ToDecimal(sligne.DL_Qte) & oi.Designation == sligne.DL_Design);
+
+                                            if (oligne.QteALivre == 0)
+                                                continue;
+                                            else if (oligne.Qte == oligne.QteALivre)
+                                                pTransfo.AddDocumentLigne(sligne);
+                                            else
+                                            {
+                                                sligne.DL_Qte = decimal.ToDouble(oligne.Qte.GetValueOrDefault() - oligne.QteALivre.GetValueOrDefault());
+                                                IBODocumentVenteLigne3 onewligne = (IBODocumentVenteLigne3)pDoc.FactoryDocumentLigne.Create();
+                                                {
+                                                    var withBlock = onewligne;
+                                                    withBlock.SetDefault();
+                                                    withBlock.SetDefaultArticleReference(sligne.Article.AR_Ref, decimal.ToDouble(oligne.QteALivre.GetValueOrDefault()));
+                                                    withBlock.DL_CMUP = sligne.DL_CMUP;
+                                                    withBlock.DL_PrixUnitaire = sligne.DL_PrixUnitaire;
+                                                    withBlock.DL_QteBL = decimal.ToDouble(oligne.QteALivre.GetValueOrDefault());
+                                                    withBlock.Remise = sligne.Remise;
+                                                    withBlock.AC_RefClient = sligne.AC_RefClient;
+                                                    withBlock.AF_RefFourniss = sligne.AF_RefFourniss;
+                                                    withBlock.CompteA = sligne.CompteA;
+                                                    withBlock.Collaborateur = sligne.Collaborateur;
+                                                    withBlock.DL_Design = sligne.DL_Design;
+                                                    withBlock.DL_NoColis = sligne.DL_NoColis;
+                                                    withBlock.DL_PrixRU = sligne.DL_PrixRU;
+                                                    withBlock.Depot = sligne.Depot;
+                                                    withBlock.Write();
+                                                    sligne.Write();
+                                                }
+                                                pTransfo.AddDocumentLigne(onewligne);
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                    pTransfo.AddDocument(pDoc);
+
+
+                                // Dim pLig As IBODocumentVenteLigne3 = pDoc.FactoryDocumentLigne.List(1)
+
+                                // Ajout de la ligne au processus 
+
+                                // Test pour savoir si le processus peut être validé 
+                                if (pTransfo.CanProcess)
+                                {
+                                    // MsgBox("Validation du processus ")
+
+                                    pTransfo.Process();
+                                    // Affichage du numéro de pièce du document créé 
+                                    // par le processus de transformation 
+                                    //oNumPieceBl = (IBODocumentVente3)pTransfo.ListDocumentsResult(1).DO_Piece;
+                                }
+                                else
+                                    // MsgBox("Traitement de récupération des erreurs ")
+                                    RecupError((IPMEncoder)pTransfo);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    mEx = ex;
+                }
+                finally
+                {
+                    // MsgBox("Fermeture de la connexion ")
+                    CloseBase(ref oCial);
+                }
+            }
+            catch (Exception ex)
+            {
+                mEx = ex;
+            }
+
+            if (mEx != null)
+                throw mEx;
+            // MsgBox(oNumPieceBl)
+            return oNumPieceBl;
         }
 
         //public static string TransformerBl(DATA.DocumentVente Commande, List<DATA.LigneDocument> pLignes, string PathGcm, string user, string Password)
