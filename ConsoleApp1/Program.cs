@@ -6,6 +6,8 @@ using System.Collections;
 using System.Net.Http.Headers;
 using System.Runtime.Remoting;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Grs.Sage.Wms.Api
 {
@@ -39,7 +41,7 @@ namespace Grs.Sage.Wms.Api
                     Refrence = "LOT",
                     Designation = "LOT",
                     Qte = 2,
-                    lot="L1",
+                    lot="L3",
                     DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
                     NumLigne = 1000,
                 });
@@ -48,11 +50,11 @@ namespace Grs.Sage.Wms.Api
                     Refrence = "LOT",
                     Designation = "LOT",
                     Qte = 1,
-                    lot = "L2",
+                    lot = "L4",
                     DatePeremption = Convert.ToDateTime("2025-08-01T10:21:47.843Z"),
                     NumLigne = 1000,
                 });
-                TransformerBL(Commande);
+                CreationBL(Commande);
             }
             catch (Exception ex)
             {
@@ -167,7 +169,93 @@ namespace Grs.Sage.Wms.Api
                
             }
         }
+        public static bool CreationBL(DocumentVente Commande)
+        {
+            try
+            {
+                // Instanciation de l'objet base commercial
+                oCial = new BSCIALApplication100c();
+                // Ouverture de la base
+                if (OpenBase(ref oCial, sPathGcm))
+                {
+                    // Création d'un objet processus "Création de document"
+                    IPMDocument mProcessDoc = oCial.CreateProcess_Document(DocumentType.DocumentTypeAchatLivraison);
+                    ;
+                    /* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 350
 
+
+                                    Input:
+                                     'Conversion du document du processus (IBODocument3) dans le type du document de destination : Facture de vente
+                                    (IBODocumentVente3)
+
+                                     */
+                    IBODocumentAchat3 mDoc = (IBODocumentAchat3)mProcessDoc.Document;
+                    // Indique au document qu’il ne doit pas recalculer les totaus automatiquement à chaque modification ou ajout de lignes
+                    mDoc.SetAutoRecalculTotaux(false);/* TODO ERROR: Skipped SkippedTokensTrivia
+;*/
+                  
+                    // Affectation du client au document
+                    // Ajout d'une ligne sur l'article ENSHF de nomenclature commerciale/composé et
+                    // conversion dans le type de ligne de document de destination (IBODocumentVenteLigne3).
+                    // Lors de l'ajout de cette ligne, les autres lignes composant la nomenclature sont également ajoutées
+                    mDoc.SetDefaultFournisseur(oCial.CptaApplication.FactoryFournisseur.ReadNumero("BILLO"));
+                   
+                    // Parcours de toutes les lignes du document
+                    foreach (var item in Commande.LgDocument)
+                    {
+                        var art = oCial.FactoryArticle.ReadReference(item.Refrence);
+                        
+                            IBODocumentAchatLigne3 mLig = (IBODocumentAchatLigne3)mProcessDoc.AddArticle(oCial.FactoryArticle.ReadReference("LOT"), 1);
+                        if (art.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
+                        {
+                            mLig.LS_NoSerie = item.lot;
+                            mLig.LS_Peremption = item.DatePeremption.GetValueOrDefault();
+                        }
+                       
+                    }
+                    //foreach (IBODocumentAchatLigne3 mLig in mDoc.FactoryDocumentLigne.List)
+                    // Application de la remise par défaut pour chacune des lignes
+                    //mLig.SetDefaultRemise();
+                  
+                    // Si le document est cohérent et peut être écrit en base
+                    if (!mProcessDoc.CanProcess)
+                    {
+                        // Récupération des erreurs
+                        RecupError(mProcessDoc);
+                    }
+                    else
+                    {
+                        // Gérération de document dans la base
+                        mProcessDoc.Process();
+
+                        /* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 1713
+
+
+                                            Input:
+                                            © 2022 Sage 148
+
+                                             */
+                    }
+
+
+
+
+                   
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erreur : " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                // Fermeture de la connexion
+                CloseBase(ref oCial);
+
+            }
+        }
         public static bool OpenBase(ref BSCIALApplication100c BaseCial, string sGcm, string sUid = "<Administrateur>", string sPwd = "")
         {
             try
