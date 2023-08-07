@@ -18,9 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uni.Sage.Infrastructures", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uni.Sage.Application", "Uni.Sage.Application\Uni.Sage.Application.csproj", "{411EE240-94C9-457A-9A5A-0540CAC5AA64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grs.Sage.ObjectMetiers.console", "Grs.Sage.ObjectMetiers.console\Grs.Sage.ObjectMetiers.console.csproj", "{69C66455-4330-462A-BD06-18C7E752FD61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grs.Sage.ObjectMetiers.console", "Grs.Sage.ObjectMetiers.console\Grs.Sage.ObjectMetiers.console.csproj", "{69C66455-4330-462A-BD06-18C7E752FD61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{DCD76A71-EBC9-4DB6-9130-BB65C3692992}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grs.Sage.ObjetMetiers", "ConsoleApp1\Grs.Sage.ObjetMetiers.csproj", "{DCD76A71-EBC9-4DB6-9130-BB65C3692992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

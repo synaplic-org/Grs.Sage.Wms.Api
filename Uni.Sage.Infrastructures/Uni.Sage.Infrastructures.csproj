@@ -94,17 +94,6 @@
     <None Remove="Queries\Template.Sql" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Objets100cLib">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>7</VersionMajor>
-      <Guid>8b42efd1-11de-4af5-8f95-2901702d7a46</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Queries\Sage100c5\COLLABORATEUR\SELECT_COLLABORATEUR_MIN.Sql" />
     <EmbeddedResource Include="Queries\Sage100c5\DOCENTETE\INSERT_F_DOCENTETE.Sql" />
     <EmbeddedResource Include="Queries\Sage100c5\DOCREGLE\INSERT_F_DOCREGL.Sql" />
@@ -191,6 +180,7 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleApp1\Grs.Sage.ObjetMetiers.csproj" />
     <ProjectReference Include="..\Uni.Sage.Application\Uni.Sage.Application.csproj" />
     <ProjectReference Include="..\Uni.Sage.Domain\Uni.Sage.Domain.csproj" />
     <ProjectReference Include="..\Uni.Sage.Shared\Uni.Sage.Shared.csproj" />

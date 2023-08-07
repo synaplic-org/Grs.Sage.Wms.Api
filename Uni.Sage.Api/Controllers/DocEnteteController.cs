@@ -28,13 +28,13 @@ namespace Grs.Sage.Wms.Api.Controllers
 			var result = await _DocEnteteService.GetDocEntete(pConnexionName);
 			return result;
 		}
-		[AllowAnonymous]
-		[HttpPost(nameof(test))]
-		public string test( DocumentVente Commande)
-        {
-            var result =  _DocEnteteService.TransformerBl(Commande);
-            return result;
-        }
+		////[AllowAnonymous]
+		////[HttpPost(nameof(test))]
+		////public bool test(DocumentVente Commande)
+  ////      {
+  ////          var result =  _DocEnteteService.TransformerBL(Commande);
+  ////          return result;
+  ////      }
 
 
 

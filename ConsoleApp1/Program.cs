@@ -1,6 +1,5 @@
 ﻿using Objets100cLib;
 using System;
-using ConsoleApp1;
 using System.Linq;
 using System.Collections;
 using System.Net.Http.Headers;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.ComponentModel;
 
-namespace Grs.Sage.Wms.Api
+namespace Grs.Sage.ObjetMetiers
 {
     public class Program 
     {
