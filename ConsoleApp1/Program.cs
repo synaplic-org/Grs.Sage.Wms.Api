@@ -26,10 +26,10 @@ namespace Grs.Sage.ObjetMetiers
                 Commande.DocType = 12;
                 Commande.Depot = "Bijou SA";
                 Commande.IDDepot = 1;
-                Commande.NumClient = "BILLO";
-                Commande.Client = "Billot";
+                Commande.NumClient = "CARAT";
+                Commande.Client = "Carat S.a.r.l";
                 Commande.DocDate = Convert.ToDateTime("2023-08-01T10:21:47.843Z");
-                Commande.NumPiece = "FBC00016";
+                Commande.NumPiece = "BC00034";
                 Commande.RefPiece = "string";
                 Commande.DocStatut = "Saisi";
                 Commande.Imprime = 1;
@@ -37,23 +37,32 @@ namespace Grs.Sage.ObjetMetiers
                 Commande.Adrs = "string";
                 Commande.LgDocument.Add(new LigneDocument
                 {
-                    Refrence = "LOT",
-                    Designation = "LOT",
-                    Qte = 2,
-                    lot="L3",
+                    Refrence = "CMUP",
+                    Designation = "CMUP",
+                    Qte = 10,
+                    lot = "",
                     DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
                     NumLigne = 1000,
                 });
                 Commande.LgDocument.Add(new LigneDocument
                 {
-                    Refrence = "LOT",
-                    Designation = "LOT",
-                    Qte = 1,
-                    lot = "L4",
-                    DatePeremption = Convert.ToDateTime("2025-08-01T10:21:47.843Z"),
+                    Refrence = "LOTSAGE",
+                    Designation = "LOTSAGE",
+                    Qte = 2,
+                    lot = "L100",
+                    DatePeremption = Convert.ToDateTime("2023-08-09T10:21:47.843Z"),
                     NumLigne = 1000,
                 });
-                TransformationBL(Commande);
+                Commande.LgDocument.Add(new LigneDocument
+                {
+                    Refrence = "LOTSAGE",
+                    Designation = "LOTSAGE",
+                    Qte = 2,
+                    lot = "L101",
+                    DatePeremption = Convert.ToDateTime("2023-08-09T10:21:47.843Z"),
+                    NumLigne = 1000,
+                }); ;
+                TransformationBL_VENTE(Commande);
             }
             catch (Exception ex)
             {
@@ -200,7 +209,271 @@ namespace Grs.Sage.ObjetMetiers
                
             }
         }
-        public static bool CreationBL(DocumentVente Commande)
+        public static bool TransformationBL_VENTE(DocumentVente Commande)
+        {
+            try
+            {
+
+               
+                // Instanciation de l'objet base commercial
+                oCial = new BSCIALApplication100c();
+                // Ouverture de la base
+                if (OpenBase(ref oCial, sPathGcm))
+                {
+                    // Création du processus Livrer
+                    IPMDocTransformer pTransfo = oCial.Transformation.Vente.CreateProcess_Livrer();
+                    // Si le devis DE00002 existe
+                    if (oCial.FactoryDocumentVente.ExistPiece(DocumentType.DocumentTypeVenteCommande, Commande.NumPiece))
+                    {
+                        // Sélection du devis DE00002
+                        IBODocumentVente3 pDoc = oCial.FactoryDocumentVente.ReadPiece(DocumentType.DocumentTypeVenteCommande, Commande.NumPiece);
+
+                        // Ajout du document au processus
+                        pTransfo.AddDocument(pDoc);
+                        // Création d'une table permettant de stocker
+                        // les lots affectés au processus
+                        var hashTb = new Hashtable();
+                        // Si le document contient des lignes
+                        if (pTransfo.ListLignesATransformer.Count > 0)
+                        {
+                            foreach (var item in Commande.LgDocument)
+                            {
+                                foreach (IBODocumentVenteLigne3 pLig in pTransfo.ListLignesATransformer)
+                                {
+                                    pLig.DL_QtePL = Convert.ToDouble(item.Qte);
+                                    if (item.Refrence == pLig.Article.AR_Ref)
+                                    {
+                                        // Test sur le suivi de stock de l'article
+                                        if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeSerie)
+                                        {
+                                            // Affectation des numéros de série
+                                            SetSerie(pTransfo, pLig);
+                                        }
+                                        else if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
+                                        {
+
+
+                                            SetLot(pTransfo, pLig, hashTb, item);
+                                        }
+                                    }
+                                       
+                                }
+                            }
+                            // Parcours de lignes de document présentes dans le processus
+                          
+                        }
+                        // Test pour savoir si le processus peut être validé
+                        if (pTransfo.CanProcess)
+                        {
+                            // Validation du processus
+                            pTransfo.Process();
+                            return true;
+                        }
+                        else
+                        {
+                            // Traitement de récupération des erreurs
+                            RecupError((IPMProcess)pTransfo);
+                            return false;
+                        }
+                    }
+                  
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+              
+                Console.WriteLine("Erreur : " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                
+                // Fermeture de la connexion
+                CloseBase(ref oCial);
+            }
+          
+        }
+        private static void SetLot( IPMDocTransformer pTransfo,  IBODocumentVenteLigne3 pLig, Hashtable hashTb,LigneDocument Ligne)
+        {
+            try
+            {
+                bool bReadAllLot = false;
+                // Tant qu'on a pas parcouru tous les série/lot et
+     
+                ;/* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 283
+   at ICSharpCode.CodeConverter.CSharp.VisualBasicConverter.MethodBodyVisitor.DefaultVisit(SyntaxNode node)
+   at Microsoft.CodeAnalysis.VisualBasic.VisualBasicSyntaxVisitor`1.VisitEmptyStatement(EmptyStatementSyntax node)
+   at Microsoft.CodeAnalysis.VisualBasic.Syntax.EmptyStatementSyntax.Accept[TResult](VisualBasicSyntaxVisitor`1 visitor)
+   at Microsoft.CodeAnalysis.VisualBasic.VisualBasicSyntaxVisitor`1.Visit(SyntaxNode node)
+   at ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.ConvertWithTrivia(SyntaxNode node)
+   at ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.DefaultVisit(SyntaxNode node)
+
+Input: 
+© 2022 Sage 195
+
+ */ // qu'il y a une quantité lot à fournir
+                //if (!bReadAllLot && pTransfo.UserLotsQteRestantAFournir[pLig] > 0)
+                //{
+                    IBODepot3 pDepot = pLig.Depot;
+                    IBOArticleDepot3 pArtDepot = pLig.Article.FactoryArticleDepot.ReadDepot(pDepot);
+                    int i = 0;
+                    var ttg = pArtDepot.FactoryArticleDepotLot.List.Count;
+                    // Parcours des numéros de lot pour l'article
+                    foreach (IBOArticleDepotLot pArtDepotLot in pArtDepot.FactoryArticleDepotLot.List)
+                    {
+                        double dQteTb = 0;
+
+                        //double dQteFournir = pTransfo.UserLotsQteRestantAFournir[pLig];
+                        double dQteFournir = Convert.ToDouble(Ligne.Qte);
+                        var t = pArtDepotLot.NoSerie;
+                        if (pArtDepotLot.NoSerie == Ligne.lot)
+                        {
+                            if (!pArtDepotLot.IsEpuised && pArtDepotLot.StockATerme() > 0)
+                            {
+                                // Création d'un objet lot
+                                IUserLot pUserLot = pTransfo.UserLotsToUse[pLig].AddNew();
+                                //pUserLot.Lot = Ligne.lot;
+                               
+                                // Si le lot a déjà été affecté mais qu'il
+                                // lui reste une quantité disponible
+                                if (hashTb.ContainsKey(pArtDepotLot) && (double)hashTb[pArtDepotLot] > 0)
+                                {
+                                    // Récupération de la quantité disponible du lot
+                                    dQteTb = (double)hashTb[pArtDepotLot];
+                                    // Si la quantité à fournir est inférieur
+                                    // à la quantité disponible du lot
+                                    if (dQteFournir <= dQteTb)
+                                    {
+                                        // Affectation du lot
+                                        pUserLot.Set(pArtDepotLot, dQteFournir, pArtDepotLot.Complement);
+                                        // Décrémentation de la quantité
+                                        // disponible du lot dans la table de hash
+                                        hashTb[pArtDepotLot] = dQteTb - dQteFournir;
+                                        // Sortie de la boucle car tous les
+                                        // lots ont été affectés à la ligne
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        // Affectation de la quantité restante du lot
+                                        pUserLot.Set(pArtDepotLot, dQteTb, pArtDepotLot.Complement);
+                                        // Le lot passe à indisponible
+                                        hashTb[pArtDepotLot] = 0;
+                                    }
+                                }
+                                else
+                                {
+
+                                    if (dQteFournir <= pArtDepotLot.StockATerme())
+                                    {
+                                        // Affectation du lot
+                                        pUserLot.Set(pArtDepotLot, dQteFournir, pArtDepotLot.Complement);
+                                        // Ajout du lot dans la table de hash
+                                        // avec décrémentation de la quantité disponible
+                                        hashTb.Add(pArtDepotLot, pArtDepotLot.StockATerme() - dQteFournir);
+                                        // Sortie de la boucle car tous les lots
+                                        // ont été affectés à la ligne
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        // Affectation de la quantité restante du lot
+                                        pUserLot.Set(pArtDepotLot, pArtDepotLot.StockATerme(), pArtDepotLot.Complement);
+                                        // Le lot passe à indisponible et est
+                                        // ajouté dans la table de hash
+                                        hashTb.Add(pArtDepotLot, 0);
+                                    }
+                                }
+                            }
+                            i += 1;
+                            // Si tous les lots de l'article ont été lus
+                            if (i == pArtDepot.FactoryArticleDepotLot.List.Count)
+                                bReadAllLot = true;
+                        }
+                        // Si le lot n'est pas épuisé
+                 
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private static void SetSerie( IPMDocTransformer pTransfo,  IBODocumentVenteLigne3 pLig)
+        {
+            try
+            {
+                bool bReadAllSerie = false;
+                // Tant qu'on a pas parcouru tous les série/lot et
+                // qu'il y a une quantité série à fournir
+                if (!bReadAllSerie && pTransfo.UserLotsQteRestantAFournir[pLig] > 0)
+                {
+                    IBODepot3 pDepot = pLig.Depot;
+                    IBOArticleDepot3 pArtDepot = pLig.Article.FactoryArticleDepot.ReadDepot(pDepot);
+                    // Parcours des numéros de série pour l'article
+                    // et pour le dépôt de la ligne
+                    foreach (IBOArticleDepotLot pArtDepotLot in pArtDepot.FactoryArticleDepotLot.List)
+                    {
+                        // Si le numéro n'est pas épuisé et s'il n'a pas déjà été affecté
+                        if (!pArtDepotLot.IsEpuised & pArtDepotLot.StockATerme() > 0 & !SerieAlreadyUse( pTransfo,  pLig, pArtDepotLot))
+                        {
+                            // Création d'un objet série
+                            IUserLot pUserLot = pTransfo.UserLotsToUse[pLig].AddNew();
+                            // Affectation du numéro de série
+                            pUserLot.Set(pArtDepotLot, 1, pArtDepotLot.Complement);
+                            bReadAllSerie = false;
+                            break;
+                        }
+                        bReadAllSerie = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        private static bool SerieAlreadyUse( IPMDocTransformer pTransfo,  IBODocumentVenteLigne3 pLig,  IBOArticleDepotLot pLot)
+        {
+            bool bRes = false;
+            try
+            {
+                // Parcours de toutes les lignes du processus
+                foreach (IBODocumentVenteLigne3 pL in pTransfo.ListLignesATransformer)
+                {
+                    // Si l'article est identique et que des num�ros de
+                    if ((!(pL.Article == null)
+                                && (pL.Article.Equals(pLig.Article)
+                                && (pTransfo.UserLotsToUse[pL].Count > 0))))
+                    {
+                        // Parcours des num�ros de s�rie affect�s � la ligne
+                        for (int i = 1; (i <= pTransfo.UserLotsToUse[pL].Count); i++)
+                        {
+                            IUserLot pTmpUserLot = (IUserLot)pTransfo.UserLotsToUse[pL];
+                            // Si le num�ro de s�rie que l'on souhaite
+                            // affecter est d�j� associ� � une ligne
+                            if (pTmpUserLot.Lot.Equals(pLot))
+                            {
+                                return true;
+                            }
+
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return bRes;
+        }
+
+                    public static bool CreationBL(DocumentVente Commande)
         {
             try
             {
@@ -287,6 +560,93 @@ namespace Grs.Sage.ObjetMetiers
 
             }
         }
+        public static bool CreationBL_Vente(DocumentVente Commande)
+        {
+            try
+            {
+                // Instanciation de l'objet base commercial
+                oCial = new BSCIALApplication100c();
+                // Ouverture de la base
+                if (OpenBase(ref oCial, sPathGcm))
+                {
+                    // Création d'un objet processus "Création de document"
+                    IPMDocument mProcessDoc = oCial.CreateProcess_Document(DocumentType.DocumentTypeVenteLivraison);
+                    ;
+                    /* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 350
+
+
+                                    Input:
+                                     'Conversion du document du processus (IBODocument3) dans le type du document de destination : Facture de vente
+                                    (IBODocumentVente3)
+
+                                     */
+                    IBODocumentVente3 mDoc = (IBODocumentVente3)mProcessDoc.Document;
+                    // Indique au document qu’il ne doit pas recalculer les totaus automatiquement à chaque modification ou ajout de lignes
+                    mDoc.SetAutoRecalculTotaux(false);/* TODO ERROR: Skipped SkippedTokensTrivia
+;*/
+
+                    // Affectation du client au document
+                    // Ajout d'une ligne sur l'article ENSHF de nomenclature commerciale/composé et
+                    // conversion dans le type de ligne de document de destination (IBODocumentVenteLigne3).
+                    // Lors de l'ajout de cette ligne, les autres lignes composant la nomenclature sont également ajoutées
+                    mDoc.SetDefaultClient(oCial.CptaApplication.FactoryClient.ReadNumero("CARAT"));
+
+                    // Parcours de toutes les lignes du document
+                    foreach (var item in Commande.LgDocument)
+                    {
+                        var art = oCial.FactoryArticle.ReadReference(item.Refrence);
+
+                        IBODocumentVenteLigne3 mLig = (IBODocumentVenteLigne3)mProcessDoc.AddArticle(oCial.FactoryArticle.ReadReference(item.Refrence), Convert.ToDouble(item.Qte));
+                        if (art.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
+                        {
+                            mLig.LS_NoSerie = item.lot;
+                            mLig.LS_Peremption = item.DatePeremption.GetValueOrDefault();
+                        }
+
+                    }
+                    //foreach (IBODocumentAchatLigne3 mLig in mDoc.FactoryDocumentLigne.List)
+                    // Application de la remise par défaut pour chacune des lignes
+                    //mLig.SetDefaultRemise();
+
+                    // Si le document est cohérent et peut être écrit en base
+                    if (!mProcessDoc.CanProcess)
+                    {
+                        // Récupération des erreurs
+                        RecupError(mProcessDoc);
+                    }
+                    else
+                    {
+                        // Gérération de document dans la base
+                        mProcessDoc.Process();
+
+                        /* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 1713
+
+
+                                            Input:
+                                            © 2022 Sage 148
+
+                                             */
+                    }
+
+
+
+
+
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erreur : " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                // Fermeture de la connexion
+                CloseBase(ref oCial);
+
+            }
+        }
         public static bool OpenBase(ref BSCIALApplication100c BaseCial, string sGcm, string sUid = "<Administrateur>", string sPwd = "")
         {
             try
@@ -341,29 +701,7 @@ namespace Grs.Sage.ObjetMetiers
             }
         }
 
-        //public static void RecupError(IPMEncoder mP)
-        //{
-        //    try
-        //    {
-        //        // Boucle sur les erreurs contenues dans la collection
-        //        for (int i = 1; i <= mP.Errors.Count; i++)
-        //        {
-        //            // Récupération des éléments erreurs
-        //            IFailInfo iFail = mP.Errors[i];
-        //            // récupération du numéro d'erreur, de l'indice et de la description de l'erreur
-        //            Console.WriteLine("Code Erreur : " + iFail.ErrorCode + " Indice : " + iFail.Indice);
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Erreur : " + ex.Message);
-        //    }
-        //}
-
-
-
-
+   
     }
 }
 
