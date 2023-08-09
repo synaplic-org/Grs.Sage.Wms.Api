@@ -37,7 +37,14 @@ namespace Grs.Sage.Wms.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+               //.UseContentRoot(Directory.GetCurrentDirectory())
+               //.UseKestrel()
+               .UseIISIntegration()
+               .UseIIS()
+               .UseStartup<Startup>();
+                    //.Build();
+                    //webBuilder.UseStartup<Startup>();
                 });
     }
 }

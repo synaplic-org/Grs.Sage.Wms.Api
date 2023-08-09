@@ -11,13 +11,13 @@ using System.ComponentModel;
 namespace Grs.Sage.ObjetMetiers
 {
     public class Program 
-    {
+    { 
 
         private static BSCIALApplication100c oCial;
         // emplacement du fichier commercial
         private static string sPathGcm = @"C:\Users\Public\Documents\Sage\Entreprise 100c\Bijou.gcm";
 
-        public static void Main(string[] args)
+        public static void Main()
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Grs.Sage.ObjetMetiers
                     DatePeremption = Convert.ToDateTime("2025-08-01T10:21:47.843Z"),
                     NumLigne = 1000,
                 });
-                CreationBL(Commande);
+                TransformationBL(Commande);
             }
             catch (Exception ex)
             {
@@ -66,11 +66,43 @@ namespace Grs.Sage.ObjetMetiers
             }
         }
 
-
-        public static bool TransformerBL(DocumentVente Commande)
+        public static bool TransformationBL(DocumentVente Commande)
         {
             try
             {
+
+                //DocumentVente Commande = new DocumentVente();
+
+                Commande.DocType = 12;
+                Commande.Depot = "Bijou SA";
+                Commande.IDDepot = 1;
+                Commande.NumClient = "BILLO";
+                Commande.Client = "Billot";
+                Commande.DocDate = Convert.ToDateTime("2023-08-01T10:21:47.843Z");
+                Commande.NumPiece = "FBC00016";
+                Commande.RefPiece = "string";
+                Commande.DocStatut = "Saisi";
+                Commande.Imprime = 1;
+                Commande.Reliquat = 1;
+                Commande.Adrs = "string";
+                Commande.LgDocument.Add(new LigneDocument
+                {
+                    Refrence = "LOT",
+                    Designation = "LOT",
+                    Qte = 2,
+                    lot = "L3",
+                    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
+                    NumLigne = 1000,
+                });
+                Commande.LgDocument.Add(new LigneDocument
+                {
+                    Refrence = "LOT",
+                    Designation = "LOT",
+                    Qte = 1,
+                    lot = "L4",
+                    DatePeremption = Convert.ToDateTime("2025-08-01T10:21:47.843Z"),
+                    NumLigne = 1000,
+                });
                 // Instanciation de l'objet base commercial
                 oCial = new BSCIALApplication100c();
                 // Ouverture de la base
@@ -292,6 +324,22 @@ namespace Grs.Sage.ObjetMetiers
             if (msg.Length > 0)
                 throw new ApplicationException(msg);
         }
+        private static bool CloseBase(ref BSCIALApplication100c bCial)
+        {
+            try
+            {
+                if (bCial.IsOpen)
+                    bCial.Close();
+                return true;
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erreur lors de la fermeture de la base : " + ex.Message);
+                return false;
+            }
+        }
 
         //public static void RecupError(IPMEncoder mP)
         //{
@@ -313,22 +361,7 @@ namespace Grs.Sage.ObjetMetiers
         //    }
         //}
 
-        private static bool CloseBase(ref BSCIALApplication100c bCial)
-        {
-            try
-            {
-                if (bCial.IsOpen)
-                    bCial.Close();
-                return true;
 
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Erreur lors de la fermeture de la base : " + ex.Message);
-                return false;
-            }
-        }
 
 
     }

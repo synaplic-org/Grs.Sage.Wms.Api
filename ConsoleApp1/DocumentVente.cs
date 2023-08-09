@@ -20,7 +20,7 @@ namespace Grs.Sage.ObjetMetiers
         public Int16? Imprime { get; set; }
         public Int16? Reliquat { get; set; }
         public string Adrs { get; set; }
-        public List<LigneDocument> LgDocument = new List<LigneDocument> ();
+        public List<LigneDocument> LgDocument = new List<LigneDocument> (); 
 
     }
 }

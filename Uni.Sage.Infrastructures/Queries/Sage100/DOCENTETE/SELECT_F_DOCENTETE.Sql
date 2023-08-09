@@ -17,8 +17,8 @@
 select DO_Piece ErpID,DO_DateLivr DateLivraison,DO_Date ComDate,DO_Ref Reference,DO_Tiers ThirdPartyID,
 ent.CO_No CollaboratorId,ent.DE_No WareHouseId,DO_TotalHT TotalHT,DO_TotalTTC TotalTTC ,
 	CASE
-			WHEN DO_Type = 3 THEN   'OutBound' 
-			WHEN DO_Type = 12 THEN   'InBound' 
+			WHEN DO_Type = 3 THEN   'Expedition' 
+			WHEN DO_Type = 12 THEN   'Reception' 
                         END ComType,
 CASE
 			WHEN  DO_Statut = 0 THEN   'Saisi' 

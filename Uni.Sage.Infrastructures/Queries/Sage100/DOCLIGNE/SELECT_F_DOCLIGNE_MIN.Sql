@@ -19,8 +19,8 @@ select * from (select DO_Piece ComHeaderId,DL_Ligne Ligne,
 ligne.AR_Ref ProductId,DL_Design Designation,DL_Qte QuantityRequest,DL_no StockID,isnull(ls.LS_NoSerie,' ')LotSerie,
 isnull(ls.LS_Peremption,'01/01/1753') DatePeremption,
 CASE
-			WHEN DO_Type = 3 THEN   'OutBound' 
-			WHEN DO_Type = 12 THEN   'InBound' 
+			WHEN DO_Type = 3 THEN   'Expedition' 
+			WHEN DO_Type = 12 THEN   'Reception' 
                         END ComType,
 --,coll.CO_Nom+' '+coll.CO_Prenom as Collaborateur,
 DL_MontantHT MontantHT,DL_MontantTTC MontantTTC 

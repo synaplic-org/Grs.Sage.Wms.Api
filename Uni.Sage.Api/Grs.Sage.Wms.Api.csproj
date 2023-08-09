@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleApp1\Grs.Sage.ObjetMetiers.csproj" />
     <ProjectReference Include="..\Uni.Sage.Application\Uni.Sage.Application.csproj" />
     <ProjectReference Include="..\Uni.Sage.Domain\Uni.Sage.Domain.csproj" />
     <ProjectReference Include="..\Uni.Sage.Infrastructures\Uni.Sage.Infrastructures.csproj" />
