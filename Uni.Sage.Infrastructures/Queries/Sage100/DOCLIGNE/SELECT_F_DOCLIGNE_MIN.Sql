@@ -15,7 +15,7 @@
 
 
 
-select * from (select DO_Piece ComHeaderId,DL_Ligne Ligne,
+select * from (select DO_Piece ComHeaderId,DL_Ligne Ligne,ligne.DL_PrixUnitaire PrixUnitaire,
 ligne.AR_Ref ProductId,DL_Design Designation,DL_Qte QuantityRequest,DL_no StockID,isnull(ls.LS_NoSerie,' ')LotSerie,
 isnull(ls.LS_Peremption,'01/01/1753') DatePeremption,
 CASE

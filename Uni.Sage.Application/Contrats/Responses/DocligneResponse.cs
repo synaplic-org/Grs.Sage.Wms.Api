@@ -19,13 +19,13 @@ namespace Uni.Sage.Application.Contrats.Responses
 		public string LotSerie { get; set; }
 		public DateTime DatePeremption { get; set; }
 		public int Ligne { get; set; }
-		
-        //public string Unite { get; set; }
-        //public string Depot { get; set; }
-        //public string Collaborateur { get; set; }
-        //public string CodeAffaire { get; set; }
-        //public string Affaire { get; set; }
-        public decimal MontantHT { get; set; }
+		public decimal PrixUnitaire { get; set; }
+		//public string Unite { get; set; }
+		//public string Depot { get; set; }
+		//public string Collaborateur { get; set; }
+		//public string CodeAffaire { get; set; }
+		//public string Affaire { get; set; }
+		public decimal MontantHT { get; set; }
 		public decimal MontantTTC { get; set; }
 
 

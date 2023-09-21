@@ -26,10 +26,10 @@ namespace Grs.Sage.ObjetMetiers
                 Commande.DocType = 12;
                 Commande.Depot = "Bijou SA";
                 Commande.IDDepot = 1;
-                Commande.NumClient = "CARAT";
+                Commande.NumClient = "BILLO";
                 Commande.Client = "Carat S.a.r.l";
                 Commande.DocDate = Convert.ToDateTime("2023-08-01T10:21:47.843Z");
-                Commande.NumPiece = "BC00034";
+                Commande.NumPiece = "FBC00018";
                 Commande.RefPiece = "string";
                 Commande.DocStatut = "Saisi";
                 Commande.Imprime = 1;
@@ -37,32 +37,41 @@ namespace Grs.Sage.ObjetMetiers
                 Commande.Adrs = "string";
                 Commande.LgDocument.Add(new LigneDocument
                 {
-                    Refrence = "CMUP",
-                    Designation = "CMUP",
-                    Qte = 10,
+                    Refrence = "BRAAR10",
+                    Designation = "Bracelet, anneaux striés",
+                    Qte = 3,
                     lot = "",
                     DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
                     NumLigne = 1000,
                 });
-                Commande.LgDocument.Add(new LigneDocument
-                {
-                    Refrence = "LOTSAGE",
-                    Designation = "LOTSAGE",
-                    Qte = 2,
-                    lot = "L100",
-                    DatePeremption = Convert.ToDateTime("2023-08-09T10:21:47.843Z"),
-                    NumLigne = 1000,
-                });
-                Commande.LgDocument.Add(new LigneDocument
-                {
-                    Refrence = "LOTSAGE",
-                    Designation = "LOTSAGE",
-                    Qte = 2,
-                    lot = "L101",
-                    DatePeremption = Convert.ToDateTime("2023-08-09T10:21:47.843Z"),
-                    NumLigne = 1000,
-                }); ;
-                TransformationBL_VENTE(Commande);
+                //Commande.LgDocument.Add(new LigneDocument
+                //{
+                //    Refrence = "CMUP",
+                //    Designation = "CMUP",
+                //    Qte = 4,
+                //    lot = "",
+                //    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
+                //    NumLigne = 1000,
+                //});
+                //Commande.LgDocument.Add(new LigneDocument
+                //{
+                //    Refrence = "LOTSAGE",
+                //    Designation = "LOTSAGE",
+                //    Qte = 2,
+                //    lot = "L100",
+                //    DatePeremption = Convert.ToDateTime("2023-08-09T10:21:47.843Z"),
+                //    NumLigne = 1000,
+                //});
+                //Commande.LgDocument.Add(new LigneDocument
+                //{
+                //    Refrence = "LOTSAGE",
+                //    Designation = "LOTSAGE",
+                //    Qte = 2,
+                //    lot = "L100",
+                //    DatePeremption = Convert.ToDateTime("2023-08-09T10:21:47.843Z"),
+                //    NumLigne = 1000,
+                //}); ;
+                TransformationBL(Commande);
             }
             catch (Exception ex)
             {
@@ -74,6 +83,120 @@ namespace Grs.Sage.ObjetMetiers
                 CloseBase(ref oCial);
             }
         }
+        public static bool Trasfers_Stock(DocumentVente Commande)
+        {
+            try
+            {
+                // Instanciation de l'objet base commercial
+                oCial = new BSCIALApplication100c();
+                // Ouverture de la base
+                if (OpenBase(ref oCial, sPathGcm))
+                {
+                    //IPMDocument mProcessDoc = oCial.CreateProcess_Document(DocumentType.DocumentTypeStockVirement);
+                    // Récupération du mouvement de transfert MT00021
+                    IBODocumentStock3 mDoc = oCial.FactoryDocumentStock.CreateType(DocumentType.DocumentTypeStockVirement);
+
+					// Création du processus transférer
+					IPMDocTransferer pTransfert = oCial.CreateProcess_DocTransferer();
+                    // Affectation du document au processus
+                    
+                    pTransfert.Document = mDoc;
+                    IBODepot3 mDepot = oCial.FactoryDepot.ReadIntitule("Bijou SA");
+                    mDoc.DepotDestination = mDepot;
+                    mDoc.DepotOrigine = mDepot;
+                    mDoc.WriteDefault();
+                    // Affectation de l'article au processus
+                    pTransfert.SetDefaultArticle(oCial.FactoryArticle.ReadReference("BAAR01"), 10);
+                    // Si le processus peut être validé
+                    if (pTransfert.CanProcess)
+                        // Validation du processus
+                        pTransfert.Process();
+                    else
+                        // Si CanProcess() a échoué, traitement
+                        // des erreurs
+                        RecupError((IPMProcess)pTransfert);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erreur : " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                // Fermeture de la connexion
+                CloseBase(ref oCial);
+            }
+        }
+
+        //public static bool Trasfers_Stock(DocumentVente Commande)
+        //{
+        //    try
+        //    {
+        //        // Instanciation de l'objet base commercial
+        //        oCial = new BSCIALApplication100c();
+        //        // Ouverture de la base
+        //        if (OpenBase(ref oCial, sPathGcm))
+        //        {
+        //            // Création du processus transférer
+        //            //IPMDocTransferer pTransfert = oCial.CreateProcess_DocTransferer(DocumentType.DocumentTypeStockVirement);
+        //            IBODepot3 mDepot = oCial.FactoryDepot.ReadIntitule("Bijou SA");
+        //            IPMDocument pDoc = oCial.CreateProcess_Document(DocumentType.DocumentTypeStockVirement);
+        //            IBODocumentStock3 mDoc = (IBODocumentStock3)pDoc.Document;
+        //            mDoc.DepotOrigine = mDepot;
+        //            // Affectation du dépôt de destination
+        //            mDoc.DepotDestination = mDepot;
+        //            mDoc.SetDefaultDO_Piece();
+        //            // Ecriture mémoire du document
+        //            mDoc.WriteDefault();
+        //            // Création du processus transférer
+        //            IPMDocTransferer pTransfert = oCial.CreateProcess_DocTransferer();
+        //            // Affectation du document mémoire au processus
+        //            pTransfert.Document = mDoc;
+        //            // Affectation de l'article au processus  
+        //            pTransfert.SetDefaultArticle(oCial.FactoryArticle.ReadReference("BAAR01"), 10);
+
+
+
+
+
+
+        //            ////// Récupération du mouvement de transfert MT00021
+        //            //IBODocumentStock3 mDoc = (IBODocumentStock3)pTransfert.Document;
+        //            // = pDoc.Document
+        //            //IBODepot3 mDepot = oCial.FactoryDepot.ReadIntitule("Bijou SA");
+        //            //IBODepot3 mDepotD = oCial.FactoryDepot.ReadIntitule("Annexe Bijou SA");
+        //            //var uu =  mDepot.DE_Code;
+        //            //mDoc.DepotOrigine = mDepot;
+        //            //mDoc.DepotDestination = mDepotD;
+
+
+        //            //pTransfert.Document = mDoc;
+        //            // Affectation de l'article au processus
+        //            //pTransfert.SetDefaultArticle(oCial.FactoryArticle.ReadReference("BAAR01"), 10);
+        //            // Si le processus peut être validé
+        //            if (pTransfert.CanProcess)
+        //                // Validation du processus
+        //                pTransfert.Process();
+        //            else
+        //                // Si CanProcess() a échoué, traitement
+        //                // des erreurs
+        //                RecupError((IPMProcess)pTransfert);
+        //        }
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Erreur : " + ex.Message);
+        //        return false;
+        //    }
+        //    finally
+        //    {
+        //        // Fermeture de la connexion
+        //        CloseBase(ref oCial);
+        //    }
+        //}
 
         public static bool TransformationBL(DocumentVente Commande)
         {
@@ -82,36 +205,36 @@ namespace Grs.Sage.ObjetMetiers
 
                 //DocumentVente Commande = new DocumentVente();
 
-                Commande.DocType = 12;
-                Commande.Depot = "Bijou SA";
-                Commande.IDDepot = 1;
-                Commande.NumClient = "BILLO";
-                Commande.Client = "Billot";
-                Commande.DocDate = Convert.ToDateTime("2023-08-01T10:21:47.843Z");
-                Commande.NumPiece = "FBC00016";
-                Commande.RefPiece = "string";
-                Commande.DocStatut = "Saisi";
-                Commande.Imprime = 1;
-                Commande.Reliquat = 1;
-                Commande.Adrs = "string";
-                Commande.LgDocument.Add(new LigneDocument
-                {
-                    Refrence = "LOT",
-                    Designation = "LOT",
-                    Qte = 2,
-                    lot = "L3",
-                    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
-                    NumLigne = 1000,
-                });
-                Commande.LgDocument.Add(new LigneDocument
-                {
-                    Refrence = "LOT",
-                    Designation = "LOT",
-                    Qte = 1,
-                    lot = "L4",
-                    DatePeremption = Convert.ToDateTime("2025-08-01T10:21:47.843Z"),
-                    NumLigne = 1000,
-                });
+                //Commande.DocType = 12;
+                //Commande.Depot = "Bijou SA";
+                //Commande.IDDepot = 1;
+                //Commande.NumClient = "BILLO";
+                //Commande.Client = "Billot";
+                //Commande.DocDate = Convert.ToDateTime("2023-08-01T10:21:47.843Z");
+                //Commande.NumPiece = "FBC00016";
+                //Commande.RefPiece = "string";
+                //Commande.DocStatut = "Saisi";
+                //Commande.Imprime = 1;
+                //Commande.Reliquat = 1;
+                //Commande.Adrs = "string";
+                //Commande.LgDocument.Add(new LigneDocument
+                //{
+                //    Refrence = "LOT",
+                //    Designation = "LOT",
+                //    Qte = 2,
+                //    lot = "L3",
+                //    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
+                //    NumLigne = 1000,
+                //});
+                //Commande.LgDocument.Add(new LigneDocument
+                //{
+                //    Refrence = "LOT",
+                //    Designation = "LOT",
+                //    Qte = 1,
+                //    lot = "L4",
+                //    DatePeremption = Convert.ToDateTime("2025-08-01T10:21:47.843Z"),
+                //    NumLigne = 1000,
+                //});
                 // Instanciation de l'objet base commercial
                 oCial = new BSCIALApplication100c();
                 // Ouverture de la base
@@ -132,9 +255,11 @@ namespace Grs.Sage.ObjetMetiers
                         {
                             foreach (IBODocumentAchatLigne3 pLig in pTransfo.ListLignesATransformer)
                             {
-                                pLig.DL_QteBC = Convert.ToDouble(item.Qte);
+                         
+                               
                                 if (item.Refrence == pLig.Article.AR_Ref)
                                 {
+                                    pLig.DL_QteBC = Convert.ToDouble(item.Qte);
                                     // Si le suivi de l'article est Série/Lot
                                     if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeSerie || pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
                                     {
@@ -234,6 +359,7 @@ namespace Grs.Sage.ObjetMetiers
                         // les lots affectés au processus
                         var hashTb = new Hashtable();
                         // Si le document contient des lignes
+
                         if (pTransfo.ListLignesATransformer.Count > 0)
                         {
                             foreach (var item in Commande.LgDocument)
@@ -243,6 +369,7 @@ namespace Grs.Sage.ObjetMetiers
                                     pLig.DL_QtePL = Convert.ToDouble(item.Qte);
                                     if (item.Refrence == pLig.Article.AR_Ref)
                                     {
+                                      
                                         // Test sur le suivi de stock de l'article
                                         if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeSerie)
                                         {
@@ -255,6 +382,10 @@ namespace Grs.Sage.ObjetMetiers
 
                                             SetLot(pTransfo, pLig, hashTb, item);
                                         }
+                                        //else
+                                        //{
+                                        //    pTransfo.AddDocumentLigne(pLig);
+                                        //}
                                     }
                                        
                                 }
@@ -294,47 +425,30 @@ namespace Grs.Sage.ObjetMetiers
             }
           
         }
-        private static void SetLot( IPMDocTransformer pTransfo,  IBODocumentVenteLigne3 pLig, Hashtable hashTb,LigneDocument Ligne)
+        private static void SetLot(IPMDocTransformer pTransfo, IBODocumentVenteLigne3 pLig, Hashtable hashTb, LigneDocument Ligne)
         {
             try
             {
                 bool bReadAllLot = false;
-                // Tant qu'on a pas parcouru tous les série/lot et
-     
-                ;/* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 283
-   at ICSharpCode.CodeConverter.CSharp.VisualBasicConverter.MethodBodyVisitor.DefaultVisit(SyntaxNode node)
-   at Microsoft.CodeAnalysis.VisualBasic.VisualBasicSyntaxVisitor`1.VisitEmptyStatement(EmptyStatementSyntax node)
-   at Microsoft.CodeAnalysis.VisualBasic.Syntax.EmptyStatementSyntax.Accept[TResult](VisualBasicSyntaxVisitor`1 visitor)
-   at Microsoft.CodeAnalysis.VisualBasic.VisualBasicSyntaxVisitor`1.Visit(SyntaxNode node)
-   at ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.ConvertWithTrivia(SyntaxNode node)
-   at ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.DefaultVisit(SyntaxNode node)
 
-Input: 
-© 2022 Sage 195
 
- */ // qu'il y a une quantité lot à fournir
-                //if (!bReadAllLot && pTransfo.UserLotsQteRestantAFournir[pLig] > 0)
-                //{
+                // qu'il y a une quantité lot à fournir
+                if (!bReadAllLot && pTransfo.UserLotsQteRestantAFournir[pLig] > 0)
+                {
                     IBODepot3 pDepot = pLig.Depot;
                     IBOArticleDepot3 pArtDepot = pLig.Article.FactoryArticleDepot.ReadDepot(pDepot);
                     int i = 0;
-                    var ttg = pArtDepot.FactoryArticleDepotLot.List.Count;
                     // Parcours des numéros de lot pour l'article
                     foreach (IBOArticleDepotLot pArtDepotLot in pArtDepot.FactoryArticleDepotLot.List)
                     {
                         double dQteTb = 0;
-
-                        //double dQteFournir = pTransfo.UserLotsQteRestantAFournir[pLig];
                         double dQteFournir = Convert.ToDouble(Ligne.Qte);
-                        var t = pArtDepotLot.NoSerie;
                         if (pArtDepotLot.NoSerie == Ligne.lot)
                         {
                             if (!pArtDepotLot.IsEpuised && pArtDepotLot.StockATerme() > 0)
                             {
                                 // Création d'un objet lot
                                 IUserLot pUserLot = pTransfo.UserLotsToUse[pLig].AddNew();
-                                //pUserLot.Lot = Ligne.lot;
-                               
                                 // Si le lot a déjà été affecté mais qu'il
                                 // lui reste une quantité disponible
                                 if (hashTb.ContainsKey(pArtDepotLot) && (double)hashTb[pArtDepotLot] > 0)
@@ -364,7 +478,9 @@ Input:
                                 }
                                 else
                                 {
-
+                               
+                                         // Si la quantité à fournir est inférieur à
+                                        // la quantité disponible du lot
                                     if (dQteFournir <= pArtDepotLot.StockATerme())
                                     {
                                         // Affectation du lot
@@ -374,6 +490,7 @@ Input:
                                         hashTb.Add(pArtDepotLot, pArtDepotLot.StockATerme() - dQteFournir);
                                         // Sortie de la boucle car tous les lots
                                         // ont été affectés à la ligne
+                                        //pTransfo.AddDocumentLigne(pLig);
                                         break;
                                     }
                                     else
@@ -385,15 +502,16 @@ Input:
                                         hashTb.Add(pArtDepotLot, 0);
                                     }
                                 }
+                                i += 1;
+                                // Si tous les lots de l'article ont été lus
+                                if (i == pArtDepot.FactoryArticleDepotLot.List.Count)
+                                    bReadAllLot = true;
                             }
-                            i += 1;
-                            // Si tous les lots de l'article ont été lus
-                            if (i == pArtDepot.FactoryArticleDepotLot.List.Count)
-                                bReadAllLot = true;
                         }
+
                         // Si le lot n'est pas épuisé
-                 
-                    //}
+                     
+                    }
                 }
             }
             catch (Exception ex)
@@ -401,7 +519,6 @@ Input:
                 Console.WriteLine(ex.Message);
             }
         }
-
         private static void SetSerie( IPMDocTransformer pTransfo,  IBODocumentVenteLigne3 pLig)
         {
             try
@@ -473,7 +590,7 @@ Input:
             return bRes;
         }
 
-                    public static bool CreationBL(DocumentVente Commande)
+         public static bool CreationBL(DocumentVente Commande)
         {
             try
             {
