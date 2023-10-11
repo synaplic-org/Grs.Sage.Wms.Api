@@ -27,8 +27,22 @@ namespace Grs.Sage.Wms.Api.Controllers
             var result = await _ArticleService.GetArticles(pConnexionName);
             return result;
         }
+        [AllowAnonymous]
+        [HttpGet(nameof(GetStockParDepot))]
+        public async Task<Result<List<ArticleParDepotResponse>>> GetStockParDepot(string pConnexionName)
+        {
+            var result = await _ArticleService.GetStockParDepot(pConnexionName);
+            return result;
+        }
+        [AllowAnonymous]
+        [HttpGet(nameof(GetStockParArticle))]
+        public async Task<Result<List<ArticleStockResponse>>> GetStockParArticle(string pConnexionName,string Reference)
+        {
+            var result = await _ArticleService.GetStockArticle(pConnexionName,Reference);
+            return result;
+        }
 
-     
+
 
 
     }

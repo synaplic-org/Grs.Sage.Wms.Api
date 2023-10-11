@@ -13,13 +13,11 @@
 --where DO_Domaine in(0,1) and DO_Type in(12,3)
 
 
-
-
 select * from (select DO_Piece ComHeaderId,DL_Ligne Ligne,ligne.DL_PrixUnitaire PrixUnitaire,
 ligne.AR_Ref ProductId,DL_Design Designation,DL_Qte QuantityRequest,DL_no StockID,isnull(ls.LS_NoSerie,' ')LotSerie,
 isnull(ls.LS_Peremption,'01/01/1753') DatePeremption,
 CASE
-			WHEN DO_Type = 3 THEN   'Expedition' 
+			WHEN DO_Type = 1 THEN   'Expedition' 
 			WHEN DO_Type = 12 THEN   'Reception' 
                         END ComType,
 --,coll.CO_Nom+' '+coll.CO_Prenom as Collaborateur,
@@ -28,7 +26,7 @@ from F_DOCLIGNE ligne
 inner join F_DEPOT dpt on dpt.DE_No = ligne.DE_No
 left outer join F_LOTSERIE ls on ls.DL_NoIn = ligne.DL_No
 left outer join F_COLLABORATEUR coll on coll.CO_No = ligne.CO_no
-where DO_Domaine in(0,1) and DO_Type in(3,12)) vw
+where DO_Domaine in(0,1) and DO_Type in(1,12)) vw
 where vw.ComType = @Type and vw.ComHeaderId=@ComHeaderId
 
 

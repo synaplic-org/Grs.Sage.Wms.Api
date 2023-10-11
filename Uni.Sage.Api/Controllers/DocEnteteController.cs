@@ -37,11 +37,18 @@ namespace Grs.Sage.Wms.Api.Controllers
 		//	return result;
 		//}
         [AllowAnonymous]
-        [HttpPost(nameof(TransformerBL))]
-        public Task<Result<bool>> TransformerBL(ComHeaderRequest Commande)
+        [HttpPost(nameof(Reception))]
+        public Task<Result<bool>> Reception(ComHeaderRequest Commande)
         {
 			var result = _DocEnteteService.Reception(Commande);
 			return result; 
+        }
+        [AllowAnonymous]
+        [HttpPost(nameof(Expedition))]
+        public Task<Result<bool>> Expedition(ComHeaderRequest Commande)
+        {
+            var result = _DocEnteteService.Expedition(Commande);
+            return result;
         }
 
 

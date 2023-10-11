@@ -17,20 +17,20 @@
 select DO_Piece ErpID,DO_DateLivr DateLivraison,DO_Date ComDate,DO_Ref Reference,DO_Tiers ThirdPartyID,
 ent.CO_No CollaboratorId,ent.DE_No WareHouseId,DO_TotalHT TotalHT,DO_TotalTTC TotalTTC ,
 	CASE
-			WHEN DO_Type = 3 THEN   'Expedition' 
+			WHEN DO_Type = 1 THEN   'Expedition' 
 			WHEN DO_Type = 12 THEN   'Reception' 
                         END ComType,
 CASE
 			WHEN  DO_Statut = 0 THEN   'Saisi' 
-			WHEN DO_Statut = 1 THEN   'Confirme' 
-             WHEN DO_Statut = 2 and DO_Type = 3 THEN   'A facturer' 
+			WHEN DO_Statut = 1 THEN   'Confirmé' 
+             WHEN DO_Statut = 2 and DO_Type = 1 THEN   'A Préparer' 
 			 WHEN DO_Statut = 2 and DO_Type = 12 THEN   'Envoye' 
                         END Status,
 
 
 DO_Type ComNumber
 from F_DOCENTETE ent
-where DO_Domaine in(0,1) and DO_Type in(12,3)
+where DO_Domaine in(0,1) and DO_Type in(12,1)
 
 
 

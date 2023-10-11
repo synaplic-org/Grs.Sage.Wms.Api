@@ -17,9 +17,10 @@ namespace Grs.Sage.Wms.Api.Services
     public interface IArticleService
     {
 
-      
+        Task<Result<List<ArticleStockResponse>>> GetStockArticle(string pConnexionName, string Reference);
         Task<Result<List<ArticleResponse>>> GetArticles(string pConnexionName);
-     
+        Task<Result<List<ArticleParDepotResponse>>> GetStockParDepot(string pConnexionName);
+
     }
 
     public class ArticleService : IArticleService
@@ -51,8 +52,46 @@ namespace Grs.Sage.Wms.Api.Services
             }
 
         }
+        public async Task<Result<List<ArticleParDepotResponse>>> GetStockParDepot(string pConnexionName)
+        {
 
-     
+            try
+            {
+                using var db = _QueryService.NewDbConnection(pConnexionName);
+                var oQuery = _QueryService.GetQuery("SELECT_ARTICLE_PAR_DEPOT");
+
+                var results = await db.QueryAsync<ArticleParDepotResponse>(oQuery);
+
+                return await Result<List<ArticleParDepotResponse>>.SuccessAsync(results.ToList());
+            }
+            catch (System.Exception ex)
+            {
+                Log.Fatal(ex, " Get Articles societe {0}  error : {1}", pConnexionName, ex.ToString());
+                return await Result<List<ArticleParDepotResponse>>.FailAsync(ex);
+            }
+
+        }
+        public async Task<Result<List<ArticleStockResponse>>> GetStockArticle(string pConnexionName,string Reference)
+        {
+
+            try
+            {
+                using var db = _QueryService.NewDbConnection(pConnexionName);
+                var oQuery = _QueryService.GetQuery("SELECT_STOCK_ARTICLE_MIN");
+
+                var results = await db.QueryAsync<ArticleStockResponse>(oQuery, new { Reference });
+
+                return await Result<List<ArticleStockResponse>>.SuccessAsync(results.ToList());
+            }
+            catch (System.Exception ex)
+            {
+                Log.Fatal(ex, " Get Articles societe {0}  error : {1}", pConnexionName, ex.ToString());
+                return await Result<List<ArticleStockResponse>>.FailAsync(ex);
+            }
+
+        }
+
+
 
     }
 

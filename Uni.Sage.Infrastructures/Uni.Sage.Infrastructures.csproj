@@ -28,6 +28,7 @@
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ARTICLE_PAR_DEPOT.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ARTICLE_PAR_DEPOT_BY_ID.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ARTICLE_PAR_FAMILLE.Sql" />
+    <None Remove="Queries\Sage100\ARTICLE\SELECT_STOCK_ARTICLE_MIN.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\UPDATE_ARTICLE_PICTURE.Sql" />
     <None Remove="Queries\Sage100\BALANCE AGEE\SELECT_BALANCE_AGEE.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_CLIENT_ARTICLE.Sql" />
@@ -113,6 +114,7 @@
     <EmbeddedResource Include="Queries\Sage100\AFFAIRE\SELECT_AFFAIRE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\AFFAIRE\SELECT_AFFAIRE_ACHAT.Sql" />
     <EmbeddedResource Include="Queries\Sage100\AFFAIRE\SELECT_AFFAIRE_VENTE.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_STOCK_ARTICLE_MIN.Sql" />
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\UPDATE_ARTICLE_PICTURE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_ARTICLE_MIN.Sql" />
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_ARTICLE_PAR_DEPOT.Sql" />

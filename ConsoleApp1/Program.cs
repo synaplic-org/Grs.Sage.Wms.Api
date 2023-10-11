@@ -255,11 +255,11 @@ namespace Grs.Sage.ObjetMetiers
                         {
                             foreach (IBODocumentAchatLigne3 pLig in pTransfo.ListLignesATransformer)
                             {
-                         
-                               
+
+                                pLig.DL_QteBC = Convert.ToDouble(item.Qte);
                                 if (item.Refrence == pLig.Article.AR_Ref)
                                 {
-                                    pLig.DL_QteBC = Convert.ToDouble(item.Qte);
+                                   
                                     // Si le suivi de l'article est Série/Lot
                                     if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeSerie || pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
                                     {
