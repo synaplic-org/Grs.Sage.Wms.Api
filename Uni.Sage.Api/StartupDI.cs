@@ -19,6 +19,7 @@ namespace Grs.Sage.Wms.Api
             services.AddScoped<IEmplacementService, EmplacementService>();
             services.AddScoped<IFamilleService, FamilleService>();
             services.AddScoped<IFournisseurService, FournisseurService>();
+            services.AddScoped<IMouvementStockService, MouvementStockService>();
         }
     }
 }   

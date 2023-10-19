@@ -35,24 +35,33 @@ namespace Grs.Sage.ObjetMetiers
                 Commande.Imprime = 1;
                 Commande.Reliquat = 1;
                 Commande.Adrs = "string";
+                //Commande.LgDocument.Add(new LigneDocument
+                //{
+                //    Refrence = "LOT",
+                //    Designation = "LOT",
+                //    Qte = 1,
+                //    lot = "L1",
+                //    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
+                //    NumLigne = 1000
+                //});
+                //Commande.LgDocument.Add(new LigneDocument
+                //{
+                //    Refrence = "LOT",
+                //    Designation = "LOT",
+                //    Qte = 1,
+                //    lot = "L2",
+                //    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
+                //    NumLigne = 1000
+                //});
                 Commande.LgDocument.Add(new LigneDocument
                 {
-                    Refrence = "BRAAR10",
-                    Designation = "Bracelet, anneaux striés",
-                    Qte = 3,
+                    Refrence = "BAAR01",
+                    Designation = "DND",
+                    Qte = 1,
                     lot = "",
                     DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
                     NumLigne = 1000,
                 });
-                //Commande.LgDocument.Add(new LigneDocument
-                //{
-                //    Refrence = "CMUP",
-                //    Designation = "CMUP",
-                //    Qte = 4,
-                //    lot = "",
-                //    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
-                //    NumLigne = 1000,
-                //});
                 //Commande.LgDocument.Add(new LigneDocument
                 //{
                 //    Refrence = "LOTSAGE",
@@ -71,7 +80,7 @@ namespace Grs.Sage.ObjetMetiers
                 //    DatePeremption = Convert.ToDateTime("2023-08-09T10:21:47.843Z"),
                 //    NumLigne = 1000,
                 //}); ;
-                TransformationBL(Commande);
+                Trasfers_Stock(Commande);
             }
             catch (Exception ex)
             {
@@ -102,11 +111,30 @@ namespace Grs.Sage.ObjetMetiers
                     
                     pTransfert.Document = mDoc;
                     IBODepot3 mDepot = oCial.FactoryDepot.ReadIntitule("Bijou SA");
-                    mDoc.DepotDestination = mDepot;
+                    IBODepot3 mDepots = oCial.FactoryDepot.ReadIntitule("Annexe Bijou SA");
+                    mDoc.DepotDestination = mDepots;
                     mDoc.DepotOrigine = mDepot;
                     mDoc.WriteDefault();
-                    // Affectation de l'article au processus
-                    pTransfert.SetDefaultArticle(oCial.FactoryArticle.ReadReference("BAAR01"), 10);
+                    foreach (var item in Commande.LgDocument)
+                    {
+                        // Affectation de l'article au processus
+                        var mArt = oCial.FactoryArticle.ReadReference(item.Refrence);
+                        pTransfert.SetDefaultArticle(mArt, Convert.ToDouble(item.Qte));
+                        if (mArt.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
+                        {
+                            // Création d'un objet IUserLot
+                            IUserLot mUserLot = pTransfert.UserLotsToUse.AddNew();
+                            // Intitialisation du lot article
+
+
+                            IBOArticleDepotLot mArtDepotLot = mArt.FactoryArticleDepot.ReadDepot(mDepot).FactoryArticleDepotLot.ReadNoSerie(item.lot);
+                            // Affectation du lot au processus
+                            mUserLot.Lot = mArtDepotLot;
+                            // Affectation de la quantité du lot
+                            mUserLot.QteToUse= Convert.ToDouble(item.Qte);
+                        }
+                    }
+                   
                     // Si le processus peut être validé
                     if (pTransfert.CanProcess)
                         // Validation du processus

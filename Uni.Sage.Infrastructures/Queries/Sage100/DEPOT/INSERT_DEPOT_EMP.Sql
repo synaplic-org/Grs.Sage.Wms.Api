@@ -1,0 +1,27 @@
+﻿INSERT INTO [dbo].[F_DEPOTEMPL]
+           (
+           [DE_NO]
+           ,[DP_No]
+           ,[DP_Code]
+           ,[DP_Intitule]
+           ,[DP_Zone]
+           ,[DP_Type]
+           ,[cbProt]
+           ,[cbCreateur]
+           ,[cbModification]
+           ,[cbReplication]
+           ,[cbFlag]
+           ,[cbCreation])
+     VALUES
+           (@DE_NO,
+            @DP_No
+           ,@DP_Code
+           ,@DP_Intitule
+           ,@DP_Zone
+           ,@DP_Type
+           ,@cbProt
+           ,@cbCreateur
+           ,@cbModification
+           ,@cbReplication
+           ,@cbFlag
+           ,@cbCreation)

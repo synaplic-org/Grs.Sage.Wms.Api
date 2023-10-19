@@ -43,8 +43,12 @@
     <None Remove="Queries\Sage100\COMPTEA\SELECT_F_COMPTEA_MIN.Sql" />
     <None Remove="Queries\Sage100\COMPTEG\SELECT_F_COMPTEG_MIN.Sql" />
     <None Remove="Queries\Sage100\CONDITION-LIVRAISON\SELECT_CONDITION_LIVRAISON.Sql" />
+    <None Remove="Queries\Sage100\DEPOT\INSERT_DEPOT.Sql" />
+    <None Remove="Queries\Sage100\DEPOT\INSERT_DEPOT_EMP.Sql" />
     <None Remove="Queries\Sage100\DEPOT\SELECT_DEPOT.Sql" />
     <None Remove="Queries\Sage100\DEPOT\SELECT_DEPOT_BY_ID.Sql" />
+    <None Remove="Queries\Sage100\DEPOT\SELECT_DEPOT_EMP_MAX.Sql" />
+    <None Remove="Queries\Sage100\DEPOT\SELECT_DEPOT_MAX.Sql" />
     <None Remove="Queries\Sage100\DEPOT\SELECT_DEPOT_PRINCIPAL.Sql" />
     <None Remove="Queries\Sage100\DEVISE\SELECT_P_DEVISE.Sql" />
     <None Remove="Queries\Sage100\DEVISE\SELECT_P_DEVISE_BY_CODE.Sql" />
@@ -135,6 +139,10 @@
     <EmbeddedResource Include="Queries\Sage100\COMPTEA\SELECT_F_COMPTEA_MIN.Sql" />
     <EmbeddedResource Include="Queries\Sage100\COMPTEG\SELECT_F_COMPTEG_MIN.Sql" />
     <EmbeddedResource Include="Queries\Sage100\CONDITION-LIVRAISON\SELECT_CONDITION_LIVRAISON.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\DEPOT\INSERT_DEPOT_EMP.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\DEPOT\INSERT_DEPOT.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\DEPOT\SELECT_DEPOT_EMP_MAX.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\DEPOT\SELECT_DEPOT_MAX.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DEPOT\SELECT_DEPOT_PRINCIPAL.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DEPOT\SELECT_DEPOT_BY_ID.Sql" />
     <EmbeddedResource Include="Queries\Sage100\DEPOT\SELECT_DEPOT.Sql" />
