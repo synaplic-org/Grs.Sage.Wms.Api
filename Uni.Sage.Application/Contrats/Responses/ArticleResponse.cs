@@ -28,6 +28,21 @@ namespace Uni.Sage.Domain.Entities
         public string WareHouseName { get; set; }
 
     }
+    public class EtatStockResponse
+    {
+        public string Reference { get; set; }
+        public string Designation { get; set; }
+        public decimal stockReel { get; set; }
+        public decimal StockPreparer { get; set; }
+        public decimal stockDispo { get; set; }
+        public decimal Qtecommande { get; set; }
+        public decimal QteReserve { get; set; }
+        public decimal StockATerme { get; set; }
+        public string Depot { get; set; }
+        public int DE_No { get; set; }
+        public string Lot { get; set; }
+
+    }
     public class ArticleStockResponse
     {
         public int DE_NO { get; set; }

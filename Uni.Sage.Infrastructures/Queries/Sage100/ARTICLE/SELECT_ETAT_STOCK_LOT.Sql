@@ -1,4 +1,4 @@
-﻿select Reference,article,A.qte stockReel, isnull( PrepaVente.Qte,0)    StockPreparer,isnull(a.qte-isnull(PrepaVente.Qte,0),0) stockDispo,Commande.qte Qtecommande, isnull(Reserve.Qte ,0)QteReserve, isnull(((A.qte-isnull(PrepaVente.Qte,0))+Commande.Qte) -isnull(Reserve.Qte,0),0) StockATerme,Depot,a.DE_no,N_lot
+﻿select Reference,Article Designation,A.qte stockReel, isnull( PrepaVente.Qte,0)    StockPreparer,isnull(a.qte-isnull(PrepaVente.Qte,0),0) stockDispo,Commande.qte Qtecommande, isnull(Reserve.Qte ,0)QteReserve, isnull(((A.qte-isnull(PrepaVente.Qte,0))+Commande.Qte) -isnull(Reserve.Qte,0),0) StockATerme,Depot,a.DE_No,N_lot Lot
 --stock preparer = preparation vente
 --stock dispo=reeel-preparer vente
 --stock commande ¨Preparation ACHAT+BC ACHAT
@@ -349,7 +349,7 @@ select stk.AR_Ref Reference,stk.DE_No,LS_Peremption,LS_NoSerie N_lot
                   inner join f_depot on f_depot.de_no=stk.de_no
                   --where
                   --stk.DE_No <> 1
-            where stk.AR_Ref  =@Reference
+            --where stk.AR_Ref  =@Reference
 
                   group by stk.ar_ref
                   ,stk.DE_No,DE_Intitule,AR_Design,AR_Stat01  

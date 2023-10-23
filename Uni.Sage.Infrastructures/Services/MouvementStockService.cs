@@ -50,7 +50,7 @@ namespace Uni.Sage.Infrastructures.Services
                      
                   
                     IBODepot3 mDepotSource = oCial.FactoryDepot.ReadIntitule("Annexe Bijou SA");
-                    IBODepot3 mDepotsCible = oCial.FactoryDepot.ReadIntitule("TRANSIT");
+                    IBODepot3 mDepotsCible = oCial.FactoryDepot.ReadIntitule("TRANSITAIRE");
                     mDoc.DepotDestination = mDepotsCible;
                     mDoc.DepotOrigine = mDepotSource;
                     mDoc.WriteDefault();

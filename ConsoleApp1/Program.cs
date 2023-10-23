@@ -35,33 +35,33 @@ namespace Grs.Sage.ObjetMetiers
                 Commande.Imprime = 1;
                 Commande.Reliquat = 1;
                 Commande.Adrs = "string";
-                //Commande.LgDocument.Add(new LigneDocument
-                //{
-                //    Refrence = "LOT",
-                //    Designation = "LOT",
-                //    Qte = 1,
-                //    lot = "L1",
-                //    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
-                //    NumLigne = 1000
-                //});
-                //Commande.LgDocument.Add(new LigneDocument
-                //{
-                //    Refrence = "LOT",
-                //    Designation = "LOT",
-                //    Qte = 1,
-                //    lot = "L2",
-                //    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
-                //    NumLigne = 1000
-                //});
                 Commande.LgDocument.Add(new LigneDocument
                 {
-                    Refrence = "BAAR01",
-                    Designation = "DND",
+                    Refrence = "LOT",
+                    Designation = "LOT",
                     Qte = 1,
-                    lot = "",
+                    lot = "L4",
                     DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
-                    NumLigne = 1000,
+                    NumLigne = 1000
                 });
+                Commande.LgDocument.Add(new LigneDocument
+                {
+                    Refrence = "LOT",
+                    Designation = "LOT",
+                    Qte = 1,
+                    lot = "L3",
+                    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
+                    NumLigne = 1000
+                });
+                //Commande.LgDocument.Add(new LigneDocument
+                //{
+                //    Refrence = "BAAR01",
+                //    Designation = "DND",
+                //    Qte = 1,
+                //    lot = "",
+                //    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
+                //    NumLigne = 1000,
+                //});
                 //Commande.LgDocument.Add(new LigneDocument
                 //{
                 //    Refrence = "LOTSAGE",
@@ -111,7 +111,7 @@ namespace Grs.Sage.ObjetMetiers
                     
                     pTransfert.Document = mDoc;
                     IBODepot3 mDepot = oCial.FactoryDepot.ReadIntitule("Bijou SA");
-                    IBODepot3 mDepots = oCial.FactoryDepot.ReadIntitule("Annexe Bijou SA");
+                    IBODepot3 mDepots = oCial.FactoryDepot.ReadIntitule("TRANSITAIRE");
                     mDoc.DepotDestination = mDepots;
                     mDoc.DepotOrigine = mDepot;
                     mDoc.WriteDefault();

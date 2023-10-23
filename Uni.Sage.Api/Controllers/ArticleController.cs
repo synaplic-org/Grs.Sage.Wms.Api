@@ -28,6 +28,14 @@ namespace Grs.Sage.Wms.Api.Controllers
             return result;
         }
         [AllowAnonymous]
+        [HttpGet(nameof(GetEtatStock))]
+        public async Task<Result<List<EtatStockResponse>>> GetEtatStock(string pConnexionName)
+        {
+            var result = await _ArticleService.GetEtatStock(pConnexionName);
+            return result;
+        }
+
+        [AllowAnonymous]
         [HttpGet(nameof(GetStockParDepot))]
         public async Task<Result<List<ArticleParDepotResponse>>> GetStockParDepot(string pConnexionName)
         {
@@ -39,6 +47,13 @@ namespace Grs.Sage.Wms.Api.Controllers
         public async Task<Result<List<ArticleStockResponse>>> GetStockParArticle(string pConnexionName,string Reference)
         {
             var result = await _ArticleService.GetStockArticle(pConnexionName,Reference);
+            return result;
+        }
+        [AllowAnonymous]
+        [HttpGet(nameof(GetEtatStockParLot))]
+        public async Task<Result<List<EtatStockResponse>>> GetEtatStockParLot(string pConnexionName, int Depot)
+        {
+            var result = await _ArticleService.GetEtatStockLot(pConnexionName,Depot);
             return result;
         }
 

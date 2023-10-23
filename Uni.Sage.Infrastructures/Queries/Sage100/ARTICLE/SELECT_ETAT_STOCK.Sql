@@ -1,4 +1,14 @@
-﻿select Reference,article,A.qte stockReel, isnull( PrepaVente.Qte,0)    StockPreparer,isnull(a.qte-isnull(PrepaVente.Qte,0),0) stockDispo,Commande.qte Qtecommande, isnull(Reserve.Qte ,0)QteReserve, isnull(((A.qte-isnull(PrepaVente.Qte,0))+Commande.Qte) -isnull(Reserve.Qte,0),0) StockATerme,Depot,a.DE_no,N_lot
+﻿
+
+select Reference,Article Designation,Sum(stockReel) stockReel,Sum(StockPreparer) StockPreparer,Sum(stockDispo) stockDispo,Sum(Qtecommande) Qtecommande,Sum(QteReserve) QteReserve,Sum(StockATerme) StockATerme,Depot,DE_No from (select Reference,article,A.qte stockReel, isnull( PrepaVente.Qte,0)    StockPreparer,
+isnull(a.qte-isnull(PrepaVente.Qte,0),0) stockDispo,isnull(Commande.qte,0) Qtecommande,
+isnull(Reserve.Qte ,0)QteReserve, isnull(((A.qte-isnull(PrepaVente.Qte,0))+Commande.Qte) -isnull(Reserve.Qte,0),0) StockATerme,
+Depot,a.DE_no,N_lot
+
+
+
+
+
 --stock preparer = preparation vente
 --stock dispo=reeel-preparer vente
 --stock commande ¨Preparation ACHAT+BC ACHAT
@@ -349,7 +359,7 @@ select stk.AR_Ref Reference,stk.DE_No,LS_Peremption,LS_NoSerie N_lot
                   inner join f_depot on f_depot.de_no=stk.de_no
                   --where
                   --stk.DE_No <> 1
-            where stk.AR_Ref  =@Reference
+            
 
                   group by stk.ar_ref
                   ,stk.DE_No,DE_Intitule,AR_Design,AR_Stat01  
@@ -365,8 +375,6 @@ select stk.AR_Ref Reference,stk.DE_No,LS_Peremption,LS_NoSerie N_lot
 
       left outer join (select sum(DL_Qte) Qte,Ar_ref ,DE_No from F_DOCLIGNE where DO_Type=1   group by ar_ref ,DE_No)Reserve ON A.Reference=Reserve.AR_Ref and a.DE_No=Reserve.DE_No
 
- 
-
-
-
-
+) Stock
+--where Reference  ='LINGOR18'
+group by Reference,Article,Depot,DE_No

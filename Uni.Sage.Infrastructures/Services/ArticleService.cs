@@ -18,6 +18,8 @@ namespace Grs.Sage.Wms.Api.Services
     {
 
         Task<Result<List<ArticleStockResponse>>> GetStockArticle(string pConnexionName, string Reference);
+        Task<Result<List<EtatStockResponse>>> GetEtatStock(string pConnexionName);
+        Task<Result<List<EtatStockResponse>>> GetEtatStockLot(string pConnexionName,int Depot);
         Task<Result<List<ArticleResponse>>> GetArticles(string pConnexionName);
         Task<Result<List<ArticleParDepotResponse>>> GetStockParDepot(string pConnexionName);
 
@@ -49,6 +51,44 @@ namespace Grs.Sage.Wms.Api.Services
             {
                 Log.Fatal(ex, " Get Articles societe {0}  error : {1}", pConnexionName, ex.ToString());
                 return await Result<List<ArticleResponse>>.FailAsync(ex);
+            }
+
+        }
+        public async Task<Result<List<EtatStockResponse>>> GetEtatStock(string pConnexionName)
+        {
+
+            try
+            {
+                using var db = _QueryService.NewDbConnection(pConnexionName);
+                var oQuery = _QueryService.GetQuery("SELECT_ETAT_STOCK");
+
+                var results = await db.QueryAsync<EtatStockResponse>(oQuery);
+
+                return await Result<List<EtatStockResponse>>.SuccessAsync(results.ToList());
+            }
+            catch (System.Exception ex)
+            {
+                Log.Fatal(ex, " Get Etat stock societe {0}  error : {1}", pConnexionName, ex.ToString());
+                return await Result<List<EtatStockResponse>>.FailAsync(ex);
+            }
+
+        }
+        public async Task<Result<List<EtatStockResponse>>> GetEtatStockLot(string pConnexionName,int Depot)
+        {
+
+            try
+            {
+                using var db = _QueryService.NewDbConnection(pConnexionName);
+                var oQuery = _QueryService.GetQuery("SELECT_ETAT_STOCK_LOT");
+
+                var results = await db.QueryAsync<EtatStockResponse>(oQuery, new { Depot });
+
+                return await Result<List<EtatStockResponse>>.SuccessAsync(results.ToList());
+            }
+            catch (System.Exception ex)
+            {
+                Log.Fatal(ex, " Get Etat stock societe {0}  error : {1}", pConnexionName, ex.ToString());
+                return await Result<List<EtatStockResponse>>.FailAsync(ex);
             }
 
         }

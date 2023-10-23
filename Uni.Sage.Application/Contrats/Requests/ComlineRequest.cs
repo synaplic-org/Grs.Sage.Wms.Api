@@ -10,6 +10,7 @@ namespace Uni.Sage.Application.Contrats.Requests
     {
         public string ProductId { get; set; }
         public string Name { get; set; }
+        
         public decimal QuantiteScane { get; set; }
         public string StockId { get; set; }
         public DateTime DatePeremption { get; set; }
