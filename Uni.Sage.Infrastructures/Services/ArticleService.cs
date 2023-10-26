@@ -40,6 +40,7 @@ namespace Grs.Sage.Wms.Api.Services
 
             try
             {
+                Log.Information("#######   hehhhooooscks up!  #######");
                 using var db = _QueryService.NewDbConnection(pConnexionName);
                 var oQuery = _QueryService.GetQuery("SELECT_ARTICLE_MIN");
 

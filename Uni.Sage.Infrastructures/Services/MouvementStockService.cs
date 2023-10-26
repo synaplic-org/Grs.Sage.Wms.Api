@@ -41,21 +41,29 @@ namespace Uni.Sage.Infrastructures.Services
                     // Récupération du mouvement de transfert MT00021
                     IBODocumentStock3 mDoc = oCial.FactoryDocumentStock.CreateType(DocumentType.DocumentTypeStockVirement);
 
-                    // Création du processus transférer
-                    IPMDocTransferer pTransfert = oCial.CreateProcess_DocTransferer();
-                    // Affectation du document au processus
+                    //// Création du processus transférer
+                    //IPMDocTransferer pTransfert = oCial.CreateProcess_DocTransferer();
+                    //// Affectation du document au processus
 
-                    pTransfert.Document = mDoc;
+                    //pTransfert.Document = mDoc;
                    
                      
                   
-                    IBODepot3 mDepotSource = oCial.FactoryDepot.ReadIntitule("Annexe Bijou SA");
+                    IBODepot3 mDepotSource = oCial.FactoryDepot.ReadIntitule("Bijou SA");
                     IBODepot3 mDepotsCible = oCial.FactoryDepot.ReadIntitule("TRANSITAIRE");
                     mDoc.DepotDestination = mDepotsCible;
                     mDoc.DepotOrigine = mDepotSource;
                     mDoc.WriteDefault();
                     foreach (var item in Request.ComLine)
                     {
+                        // Création du processus transférer
+                        IPMDocTransferer pTransfert = oCial.CreateProcess_DocTransferer();
+                        // Affectation du document au processus
+
+                        pTransfert.Document = mDoc;
+
+
+                        //pTransfert.ListLignesResult = Convert.ToDouble(item.QuantiteScane);
                         // Affectation de l'article au processus
                         var mArt = oCial.FactoryArticle.ReadReference(item.ProductId);
                         pTransfert.SetDefaultArticle(mArt, Convert.ToDouble(item.QuantiteScane));
@@ -72,16 +80,17 @@ namespace Uni.Sage.Infrastructures.Services
                             // Affectation de la quantité du lot
                             mUserLot.QteToUse = Convert.ToDouble(item.QuantiteScane);
                         }
+                        if (pTransfert.CanProcess)
+                            // Validation du processus
+                            pTransfert.Process();
+                        else
+                            // Si CanProcess() a échoué, traitement
+                            // des erreurs
+                            RecupError((IPMProcess)pTransfert);
                     }
 
                     // Si le processus peut être validé
-                    if (pTransfert.CanProcess)
-                        // Validation du processus
-                        pTransfert.Process();
-                    else
-                        // Si CanProcess() a échoué, traitement
-                        // des erreurs
-                        RecupError((IPMProcess)pTransfert);
+                   
                 }
                 return await Result<bool>.SuccessAsync(data: true);
             }

@@ -206,7 +206,6 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleApp1\Grs.Sage.ObjetMetiers.csproj" />
     <ProjectReference Include="..\Uni.Sage.Application\Uni.Sage.Application.csproj" />
     <ProjectReference Include="..\Uni.Sage.Domain\Uni.Sage.Domain.csproj" />
     <ProjectReference Include="..\Uni.Sage.Shared\Uni.Sage.Shared.csproj" />
