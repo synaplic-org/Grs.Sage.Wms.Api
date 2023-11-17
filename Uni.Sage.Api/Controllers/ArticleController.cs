@@ -6,6 +6,8 @@ using Grs.Sage.Wms.Api.Services;
 using Uni.Sage.Domain.Entities;
 using Uni.Sage.Shared.Wrapper;
 using Microsoft.AspNetCore.Authorization;
+using System;
+using Uni.Sage.Application.Contrats.Responses;
 
 namespace Grs.Sage.Wms.Api.Controllers
 {
@@ -44,7 +46,7 @@ namespace Grs.Sage.Wms.Api.Controllers
         }
         [AllowAnonymous]
         [HttpGet(nameof(GetStockParArticle))]
-        public async Task<Result<List<ArticleStockResponse>>> GetStockParArticle(string pConnexionName,string Reference)
+        public async Task<Result<List<EtatStockResponse>>> GetStockParArticle(string pConnexionName,string Reference)
         {
             var result = await _ArticleService.GetStockArticle(pConnexionName,Reference);
             return result;
@@ -56,9 +58,28 @@ namespace Grs.Sage.Wms.Api.Controllers
             var result = await _ArticleService.GetEtatStockLot(pConnexionName,Depot);
             return result;
         }
+        [AllowAnonymous]
+        [HttpGet(nameof(GetStockADate))]
+        public async Task<Result<List<SageStockResponse>>> GetStockADate(string pConnexionName,int depot, DateTime date, string filter)
+        {
+            return await _ArticleService.GetStockADateAsync(pConnexionName,date,depot,filter);
+            
+        }
+        [AllowAnonymous]
+        [HttpGet(nameof(GetArticleById_lot))]
+        public async Task<Result<List<ArticleLotResponse>>> GetArticleById_lot(string pConnexionName,string Reference)
+        {
+            return await _ArticleService.GetArticleById_lot(pConnexionName, Reference);
+
+        }
+		[AllowAnonymous]
+		[HttpGet(nameof(EtatValoriseArticle))]
+		public async Task<Result<List<EtatArticleValoriseResponse>>> EtatValoriseArticle(string pConnexionName, int CodeDepot)
+		{
+			return await _ArticleService.EtatValoriseArticle(pConnexionName, CodeDepot);
+
+		}
 
 
-
-
-    }
+	}
 }

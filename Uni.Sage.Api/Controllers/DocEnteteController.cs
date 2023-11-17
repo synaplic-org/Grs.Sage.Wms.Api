@@ -38,14 +38,14 @@ namespace Grs.Sage.Wms.Api.Controllers
 		//}
         [AllowAnonymous]
         [HttpPost(nameof(Reception))]
-        public Task<Result<bool>> Reception(ComHeaderRequest Commande)
+        public Task<Result<string>> Reception(ComHeaderRequest Commande)
         {
 			var result = _DocEnteteService.Reception(Commande);
 			return result; 
         }
         [AllowAnonymous]
         [HttpPost(nameof(Expedition))]
-        public Task<Result<bool>> Expedition(ComHeaderRequest Commande)
+        public Task<Result<string>> Expedition(ComHeaderRequest Commande)
         {
             var result = _DocEnteteService.Expedition(Commande);
             return result;

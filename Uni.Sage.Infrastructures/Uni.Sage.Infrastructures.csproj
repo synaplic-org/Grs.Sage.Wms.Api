@@ -23,6 +23,7 @@
     <None Remove="Queries\Sage100\AFFAIRE\SELECT_AFFAIRE_BY_ID.Sql" />
     <None Remove="Queries\Sage100\AFFAIRE\SELECT_AFFAIRE_VENTE.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ARTCILE_ISACTIF.Sql" />
+    <None Remove="Queries\Sage100\ARTICLE\SELECT_ARTICLE_LOT_BYID.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ARTICLE_MIN.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ARTICLE_MIN_BY_ID.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ARTICLE_PAR_DEPOT.Sql" />
@@ -30,7 +31,9 @@
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ARTICLE_PAR_FAMILLE.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ETAT_STOCK.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_ETAT_STOCK_LOT.Sql" />
+    <None Remove="Queries\Sage100\ARTICLE\SELECT_ETAT_VALORISATION_ARTICLE.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_STOCK_ARTICLE_MIN.Sql" />
+    <None Remove="Queries\Sage100\ARTICLE\STOCK_A_DATE_BY_DEPOT.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\UPDATE_ARTICLE_PICTURE.Sql" />
     <None Remove="Queries\Sage100\BALANCE AGEE\SELECT_BALANCE_AGEE.Sql" />
     <None Remove="Queries\Sage100\ARTICLE\SELECT_CLIENT_ARTICLE.Sql" />
@@ -102,17 +105,6 @@
     <None Remove="Queries\Template.Sql" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Objets100cLib">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>0</VersionMinor>
-      <VersionMajor>7</VersionMajor>
-      <Guid>8b42efd1-11de-4af5-8f95-2901702d7a46</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Queries\Sage100c5\COLLABORATEUR\SELECT_COLLABORATEUR_MIN.Sql" />
     <EmbeddedResource Include="Queries\Sage100c5\DOCENTETE\INSERT_F_DOCENTETE.Sql" />
     <EmbeddedResource Include="Queries\Sage100c5\DOCREGLE\INSERT_F_DOCREGL.Sql" />
@@ -123,6 +115,9 @@
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_ETAT_STOCK_LOT.Sql" />
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_ETAT_STOCK.Sql" />
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_STOCK_ARTICLE_MIN.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\ARTICLE\STOCK_A_DATE_BY_DEPOT.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_ARTICLE_LOT_BYID.Sql" />
+    <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_ETAT_VALORISATION_ARTICLE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\UPDATE_ARTICLE_PICTURE.Sql" />
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_ARTICLE_MIN.Sql" />
     <EmbeddedResource Include="Queries\Sage100\ARTICLE\SELECT_ARTICLE_PAR_DEPOT.Sql" />

@@ -9,6 +9,7 @@ namespace Uni.Sage.Domain.Entities
     public class ArticleResponse
     {
         public string ErpID { get; set; }
+        public string CodeBarre { get; set; }
         public string Name { get; set; }
         public string Brand { get; set; }
         public string FamilyID { get; set; }
@@ -17,6 +18,21 @@ namespace Uni.Sage.Domain.Entities
      
 
 
+    }
+    public class ArticleLotResponse
+    {
+        public string ProductId { get; set; }
+        public string StockId { get; set; }
+        public DateTime DatePeremption { get; set; }
+    }
+    public class EtatArticleValoriseResponse
+    {
+        public string ProductId { get; set; }
+        public int CodeDepot { get; set; }
+        public decimal PMP { get; set; }
+        public decimal PrixAchat { get; set; }
+        public string Intitule { get; set; }
+        public decimal DernierPachat { get; set; }
     }
     public class ArticleParDepotResponse
     {

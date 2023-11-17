@@ -22,8 +22,8 @@ namespace Uni.Sage.Infrastructures.Services
 	{
 	    Task<Result<List<DocEnteteResponse>>> GetDocEntete(string pConnexionName);
         bool TransformerBl(ComHeaderRequest cm);
-        Task<Result<bool>> Reception(ComHeaderRequest cm);
-        Task<Result<bool>> Expedition(ComHeaderRequest cm);
+        Task<Result<string>> Reception(ComHeaderRequest cm);
+        Task<Result<string>> Expedition(ComHeaderRequest cm);
 
     }
    
@@ -55,140 +55,7 @@ namespace Uni.Sage.Infrastructures.Services
             }
 
         }
-        //public static bool TransformationBL(Grs.Sage.ObjetMetiers.DocumentVente Commande)
-        //{
-        //    try
-        //    {
-
-        //        //DocumentVente Commande = new DocumentVente();
-
-        //        Commande.DocType = 12;
-        //        Commande.Depot = "Bijou SA";
-        //        Commande.IDDepot = 1;
-        //        Commande.NumClient = "BILLO";
-        //        Commande.Client = "Billot";
-        //        Commande.DocDate = Convert.ToDateTime("2023-08-01T10:21:47.843Z");
-        //        Commande.NumPiece = "FBC00016";
-        //        Commande.RefPiece = "string";
-        //        Commande.DocStatut = "Saisi";
-        //        Commande.Imprime = 1;
-        //        Commande.Reliquat = 1;
-        //        Commande.Adrs = "string";
-        //        //Commande.LgDocument.Add(new Grs.Sage.ObjetMetiers.LigneDocument
-        //        //{
-        //        //    Refrence = "LOT",
-        //        //    Designation = "LOT",
-        //        //    Qte = 2,
-        //        //    lot = "L3",
-        //        //    DatePeremption = Convert.ToDateTime("2026-08-01T10:21:47.843Z"),
-        //        //    NumLigne = 1000,
-        //        //});
-        //        //Commande.LgDocument.Add(new Grs.Sage.ObjetMetiers.LigneDocument
-        //        //{
-        //        //    Refrence = "LOT",
-        //        //    Designation = "LOT",
-        //        //    Qte = 1,
-        //        //    lot = "L4",
-        //        //    DatePeremption = Convert.ToDateTime("2025-08-01T10:21:47.843Z"),
-        //        //    NumLigne = 1000,
-        //        //});
-        //        // Instanciation de l'objet base commercial
-        //        oCial = new BSCIALApplication100c();
-        //        // Ouverture de la base
-        //        if (OpenBase(ref oCial, sPathGcm))
-        //        {
-        //            // Création du processus Réceptionner
-        //            IPMDocTransformer pTransfo = oCial.Transformation.Achat.CreateProcess_Receptionner();
-        //            //Description(de);
-        //            // Si le bon de commande FBC00006 existe
-        //            if (oCial.FactoryDocumentAchat.ExistPiece(DocumentType.DocumentTypeAchatCommandeConf, Commande.NumPiece))
-        //            {
-        //                // Sélection du bon de commande FBC00006
-        //                IBODocumentAchat3 pDoc = oCial.FactoryDocumentAchat.ReadPiece(DocumentType.DocumentTypeAchatCommandeConf, Commande.NumPiece);
-        //                // Ajout du document au processus
-        //                pTransfo.AddDocument(pDoc);
-        //                // Initialisation des numéros série/lot à créer
-        //                foreach (var item in Commande.LgDocument)
-        //                {
-        //                    foreach (IBODocumentAchatLigne3 pLig in pTransfo.ListLignesATransformer)
-        //                    {
-        //                        pLig.DL_QteBC = Convert.ToDouble(item.Qte);
-        //                        if (item.Refrence == pLig.Article.AR_Ref)
-        //                        {
-        //                            // Si le suivi de l'article est Série/Lot
-        //                            if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeSerie || pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
-        //                            {
-        //                                // Récupération du dépôt de la ligne
-        //                                IBODepot3 pDepot = pLig.Depot;
-        //                                // Récupération du dépôt de stockage de l'article
-        //                                IBOArticleDepot3 pArtDepot = pLig.Article.FactoryArticleDepot.ReadDepot(pDepot);
-        //                                // Tant que des série/lot doivent être fournis
-        //                                //if (pTransfo.UserLotsQteRestantAFournir[pLig] > 0)
-        //                                //{
-        //                                // Création d'un Lot/Série pour l'article
-        //                                IBOArticleDepotLot pArtDepotLot = (IBOArticleDepotLot)pArtDepot.FactoryArticleDepotLot.Create();
-        //                                // Création d'un lot/série pour la ligne
-        //                                IUserLot pUserLot = pTransfo.UserLotsToUse[pLig].AddNew(); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
-
-        //                                if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
-        //                                {
-
-        //                                    pArtDepotLot.NoSerie = item.lot;
-        //                                    pArtDepotLot.DatePeremption = item.DatePeremption.GetValueOrDefault();
-        //                                    // Ajout du lot au processus pour toute la quantité nécessaire
-        //                                    //pUserLot.Set(pArtDepotLot, pTransfo.UserLotsQteRestantAFournir[pLig], pArtDepotLot.Complement);
-        //                                    pUserLot.Set(pArtDepotLot, Convert.ToDouble(item.Qte), pArtDepotLot.Complement);
-
-
-        //                                }
-        //                                //else
-        //                                //{
-        //                                //    // Affectation du numéro de série
-        //                                //    pArtDepotLot.NoSerie = myLine.lot;
-        //                                //    // Ajout du numéro de série au processus
-        //                                //    pUserLot.Set(pArtDepotLot, 1, pArtDepotLot.Complement);
-        //                                //    // Incrémentation du numéro de série
-        //                                //    //sNumSerie = pArtDepotLot.FactoryArticleDepotLot.NextNoSerie[sNumSerie];
-        //                                //}
-        //                                //}
-
-
-        //                            }
-
-        //                        }
-        //                    }
-        //                }
-
-        //                // Test pour savoir si le processus peut être validé
-        //                if (pTransfo.CanProcess)
-        //                {
-        //                    // Validation du processus
-        //                    pTransfo.Process();
-        //                    return true;
-        //                }
-        //                else
-        //                {
-        //                    // Traitement de récupération des erreurs
-        //                    RecupError((IPMProcess)pTransfo);
-        //                    return false;
-        //                }
-
-        //            }
-        //        }
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Erreur : " + ex.Message);
-        //        return false;
-        //    }
-        //    finally
-        //    {
-        //        // Fermeture de la connexion
-        //        CloseBase(ref oCial);
-
-        //    }
-        //}
+       
         public bool TransformerBl(ComHeaderRequest cm)
         {
             try
@@ -273,40 +140,69 @@ namespace Uni.Sage.Infrastructures.Services
         }
 
 
-        public async Task<Result<bool>> Reception(ComHeaderRequest cm)
+        public async Task<Result<string>> Reception(ComHeaderRequest cm)
         {
             if (cm.LaisseBC == false)
             {
-               var Result = TarnsformerBL_Achat(cm);
-                
-               return await Result<bool>.SuccessAsync(Result);
-              
+                var Result = TarnsformerBL_Achat(cm);
+                if (Result == "Succées")
+                {
+                    return await Result<string>.SuccessAsync(data: Result);
+                }
+                else
+                {
+                    return await Result<string>.FailAsync(Result);
+                }
+
             }
             else
             {
-                var Result =  CreationBL_Achat(cm);
-                return await Result<bool>.SuccessAsync(Result);
+                var Result =   CreationBL_Achat(cm);
+                if (Result == "Succées")
+                {
+                    return await Result<string>.SuccessAsync( data: Result);
+                }
+                else
+                {
+                    return await Result<string>.FailAsync(Result);
+                }
+               
             }
             
         }
-        public async Task<Result<bool>> Expedition(ComHeaderRequest cm)
+        public async Task<Result<string>> Expedition(ComHeaderRequest cm)
         {
             if (cm.LaisseBC == false)
             {
                 var Result = TransformationBL_VENTE(cm);
-
-                return await Result<bool>.SuccessAsync(Result);
+                if (Result == "Succées")
+                {
+                    return await Result<string>.SuccessAsync(data: Result);
+                }
+                else
+                {
+                    return await Result<string>.FailAsync(Result);
+                }
 
             }
             else
             {
                 var Result = CreationBL_Vente(cm);
-                return await Result<bool>.SuccessAsync(Result);
+                if (Result == "Succées")
+                {
+                    return await Result<string>.SuccessAsync(data: Result);
+                }
+                else
+                {
+                    return await Result<string>.FailAsync(Result);
+                }
+
+                
             }
 
         }
 
-        public static bool TarnsformerBL_Achat(ComHeaderRequest cm)
+        public static string TarnsformerBL_Achat(ComHeaderRequest cm)
         {
             try
             {
@@ -331,9 +227,10 @@ namespace Uni.Sage.Infrastructures.Services
                             foreach (IBODocumentAchatLigne3 pLig in pTransfo.ListLignesATransformer)
                             {
 
-                                pLig.DL_QteBC = Convert.ToDouble(item.QuantiteScane);
+                              
                                 if (item.ProductId == pLig.Article.AR_Ref && Convert.ToDouble(item.PrixUnitaire) == pLig.DL_PrixUnitaire)
                                 {
+                                    pLig.DL_QteBL = Convert.ToDouble(item.QuantiteScane);
                                     // Si le suivi de l'article est Série/Lot
                                     if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeSerie || pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
                                     {
@@ -360,18 +257,7 @@ namespace Uni.Sage.Infrastructures.Services
 
 
                                         }
-                                        //else
-                                        //{
-                                        //    // Affectation du numéro de série
-                                        //    pArtDepotLot.NoSerie = myLine.lot;
-                                        //    // Ajout du numéro de série au processus
-                                        //    pUserLot.Set(pArtDepotLot, 1, pArtDepotLot.Complement);
-                                        //    // Incrémentation du numéro de série
-                                        //    //sNumSerie = pArtDepotLot.FactoryArticleDepotLot.NextNoSerie[sNumSerie];
-                                        //}
-                                        //}
-
-
+                                    
                                     }
 
                                 }
@@ -383,23 +269,27 @@ namespace Uni.Sage.Infrastructures.Services
                         {
                             // Validation du processus
                             pTransfo.Process();
-                            return true;
                         }
                         else
                         {
                             // Traitement de récupération des erreurs
-                            RecupError((IPMProcess)pTransfo);
-                            return false;
+                            var msg= RecupError((IPMProcess)pTransfo);
+                            return msg;
                         }
 
                     }
+                    else
+                    {
+                        var msg = "Le Bon de commande n'existe pas!!";
+                        return msg;
+                    }
                 }
-                return true;
+                return "Succeés";
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erreur : " + ex.Message);
-                return false;
+                return ex.Message;
             }
             finally
             {
@@ -408,7 +298,7 @@ namespace Uni.Sage.Infrastructures.Services
 
             }
         }
-        public static bool TransformationBL_VENTE(ComHeaderRequest cm)
+        public static string TransformationBL_VENTE(ComHeaderRequest cm)
         {
             try
             {
@@ -440,10 +330,10 @@ namespace Uni.Sage.Infrastructures.Services
                             {
                                 foreach (IBODocumentVenteLigne3 pLig in pTransfo.ListLignesATransformer)
                                 {
-                                    pLig.DL_QtePL = Convert.ToDouble(item.QuantiteScane);
+                                   
                                     if (item.ProductId == pLig.Article.AR_Ref)
                                     {
-
+                                        pLig.DL_QteBL = Convert.ToDouble(item.QuantiteScane);
                                         // Test sur le suivi de stock de l'article
                                         if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeSerie)
                                         {
@@ -458,10 +348,36 @@ namespace Uni.Sage.Infrastructures.Services
                                         }
                                         //else
                                         //{
+                                        //    int i = 0;
+                                        //    int ind = 0;
+                                        //    foreach(IBODocumentVenteLigne3 a in pTransfo.ListLignesATransformer)
+                                        //    {
+                                        //        if(item.ProductId == a.Article.AR_Ref)
+                                        //        {
+                                        //            ind = i;
+                                        //        }
+                                        //        else
+                                        //        {
+                                        //            i++;
+                                        //        }
+                                        //    }
+                                        //    pTransfo.ListLignesATransformer[ind] = Convert.ToDouble(item.QuantiteScane);
+
+                                        //}
+                                        //else
+                                        //{
                                         //    pTransfo.AddDocumentLigne(pLig);
                                         //}
                                     }
 
+                                }
+                            }
+                            foreach (IBODocumentVenteLigne3 item in pTransfo.ListLignesATransformer)
+                            {
+                                var IsExistLine = cm.ComLine.FirstOrDefault(x => x.ProductId == item.Article.AR_Ref);
+                                if (IsExistLine == null)
+                                {
+                                    item.DL_QteBL =0;
                                 }
                             }
                             // Parcours de lignes de document présentes dans le processus
@@ -472,24 +388,28 @@ namespace Uni.Sage.Infrastructures.Services
                         {
                             // Validation du processus
                             pTransfo.Process();
-                            return true;
                         }
                         else
                         {
                             // Traitement de récupération des erreurs
-                            RecupError((IPMProcess)pTransfo);
-                            return false;
+                            var msg = RecupError((IPMProcess)pTransfo);
+                            return msg;
                         }
+                    }
+                    else
+                    {
+                        var msg = "Le bon de commande n'existe pas!!";
+                        return msg;
                     }
 
                 }
-                return true;
+                return "Succées";
             }
             catch (Exception ex)
             {
 
                 Console.WriteLine("Erreur : " + ex.Message);
-                return false;
+                return ex.Message;
             }
             finally
             {
@@ -500,40 +420,26 @@ namespace Uni.Sage.Infrastructures.Services
 
         }
 
-        public static bool CreationBL_Achat(ComHeaderRequest cm)
+        public static string CreationBL_Achat(ComHeaderRequest cm)
         {
             try
             {
-                // Instanciation de l'objet base commercial
                 oCial = new BSCIALApplication100c();
-                // Ouverture de la base
                 if (OpenBase(ref oCial, sPathGcm))
                 {
-                    // Création d'un objet processus "Création de document"
                     IPMDocument mProcessDoc = oCial.CreateProcess_Document(DocumentType.DocumentTypeAchatLivraison);
-                    ;
-                    /* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 350
-
-
-                                    Input:
-                                     'Conversion du document du processus (IBODocument3) dans le type du document de destination : Facture de vente
-                                    (IBODocumentVente3)
-
-                                     */
                     IBODocumentAchat3 mDoc = (IBODocumentAchat3)mProcessDoc.Document;
-                    // Indique au document qu’il ne doit pas recalculer les totaus automatiquement à chaque modification ou ajout de lignes
-                    mDoc.SetAutoRecalculTotaux(false);/* TODO ERROR: Skipped SkippedTokensTrivia
-;*/
-
-                    // Affectation du client au document
-                    // Ajout d'une ligne sur l'article ENSHF de nomenclature commerciale/composé et
-                    // conversion dans le type de ligne de document de destination (IBODocumentVenteLigne3).
-                    // Lors de l'ajout de cette ligne, les autres lignes composant la nomenclature sont également ajoutées
+                    
+                    //IBODocumentAchat3 mDoc = oCial.FactoryDocumentAchat.CreateType(DocumentType.DocumentTypeAchatLivraison);
+                    mDoc.SetAutoRecalculTotaux(false);
                     mDoc.SetDefaultFournisseur(oCial.CptaApplication.FactoryFournisseur.ReadNumero(cm.ThirdParty));
 
-                    // Parcours de toutes les lignes du document
                     foreach (var item in cm.ComLine)
                     {
+                        //IPMDocument mProcessDoc = oCial.CreateProcess_Document(DocumentType.DocumentTypeAchatLivraison);
+                        //IBODocumentAchat3 mDoc = (IBODocumentAchat3)mProcessDoc.Document;
+                      
+
                         var art = oCial.FactoryArticle.ReadReference(item.ProductId);
 
                         IBODocumentAchatLigne3 mLig = (IBODocumentAchatLigne3)mProcessDoc.AddArticle(oCial.FactoryArticle.ReadReference(item.ProductId), Convert.ToDouble(item.QuantiteScane));
@@ -542,43 +448,27 @@ namespace Uni.Sage.Infrastructures.Services
                             mLig.LS_NoSerie = item.StockId;
                             mLig.LS_Peremption = item.DatePeremption;
                         }
+                        
 
                     }
-                    //foreach (IBODocumentAchatLigne3 mLig in mDoc.FactoryDocumentLigne.List)
-                    // Application de la remise par défaut pour chacune des lignes
-                    //mLig.SetDefaultRemise();
 
-                    // Si le document est cohérent et peut être écrit en base
                     if (!mProcessDoc.CanProcess)
                     {
-                        // Récupération des erreurs
-                        RecupError(mProcessDoc);
+                        var msg = RecupError(mProcessDoc);
+                        return msg;
                     }
                     else
                     {
-                        // Gérération de document dans la base
                         mProcessDoc.Process();
 
-                        /* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 1713
-
-
-                                            Input:
-                                            © 2022 Sage 148
-
-                                             */
                     }
-
-
-
-
-
                 }
-                return true;
+                return "Succées";
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erreur : " + ex.Message);
-                return false;
+                return ex.Message;
             }
             finally
             {
@@ -587,7 +477,7 @@ namespace Uni.Sage.Infrastructures.Services
 
             }
         }
-        public static bool CreationBL_Vente(ComHeaderRequest cm)
+        public string CreationBL_Vente(ComHeaderRequest cm)
         {
             try
             {
@@ -597,8 +487,8 @@ namespace Uni.Sage.Infrastructures.Services
                 if (OpenBase(ref oCial, sPathGcm))
                 {
                     // Création d'un objet processus "Création de document"
+                    //IPMDocument mProcessDoc = oCial.CreateProcess_Document(DocumentType.DocumentTypeVenteLivraison);
                     IPMDocument mProcessDoc = oCial.CreateProcess_Document(DocumentType.DocumentTypeVenteLivraison);
-                    ;
                     /* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 350
 
 
@@ -607,20 +497,24 @@ namespace Uni.Sage.Infrastructures.Services
                                     (IBODocumentVente3)
 
                                      */
+                    //IBODocumentVente3 mDoc = (IBODocumentVente3)mProcessDoc.Document;
+                    // Indique au document qu’il ne doit pas recalculer les totaus automatiquement à chaque modification ou ajout de lignes
+
                     IBODocumentVente3 mDoc = (IBODocumentVente3)mProcessDoc.Document;
                     // Indique au document qu’il ne doit pas recalculer les totaus automatiquement à chaque modification ou ajout de lignes
                     mDoc.SetAutoRecalculTotaux(false);/* TODO ERROR: Skipped SkippedTokensTrivia
 ;*/
-
-                    // Affectation du client au document
-                    // Ajout d'une ligne sur l'article ENSHF de nomenclature commerciale/composé et
-                    // conversion dans le type de ligne de document de destination (IBODocumentVenteLigne3).
-                    // Lors de l'ajout de cette ligne, les autres lignes composant la nomenclature sont également ajoutées
                     mDoc.SetDefaultClient(oCial.CptaApplication.FactoryClient.ReadNumero(cm.ThirdParty));
 
                     // Parcours de toutes les lignes du document
                     foreach (var item in cm.ComLine)
                     {
+                        //IPMDocument mProcessDoc = oCial.CreateProcess_Document(DocumentType.DocumentTypeVenteLivraison);
+                        //IBODocumentVente3 mDoc = (IBODocumentVente3)mProcessDoc.Document;
+                        //mDoc.SetAutoRecalculTotaux(false);/* TODO ERROR: Skipped SkippedTokensTrivia;*/
+
+
+                        //mDoc.SetDefaultClient(oCial.CptaApplication.FactoryClient.ReadNumero(cm.ThirdParty));
                         var art = oCial.FactoryArticle.ReadReference(item.ProductId);
 
                         IBODocumentVenteLigne3 mLig = (IBODocumentVenteLigne3)mProcessDoc.AddArticle(oCial.FactoryArticle.ReadReference(item.ProductId), Convert.ToDouble(item.QuantiteScane));
@@ -629,49 +523,34 @@ namespace Uni.Sage.Infrastructures.Services
                             mLig.LS_NoSerie = item.StockId;
                             mLig.LS_Peremption = item.DatePeremption;
                         }
+                        
+
 
                     }
-                    //foreach (IBODocumentAchatLigne3 mLig in mDoc.FactoryDocumentLigne.List)
-                    // Application de la remise par défaut pour chacune des lignes
-                    //mLig.SetDefaultRemise();
-
                     // Si le document est cohérent et peut être écrit en base
                     if (!mProcessDoc.CanProcess)
                     {
-                        // Récupération des erreurs
-                        RecupError(mProcessDoc);
+                        var Error = RecupError(mProcessDoc);
+
+
                     }
                     else
                     {
-                        // Gérération de document dans la base
                         mProcessDoc.Process();
-
-                        /* Cannot convert EmptyStatementSyntax, CONVERSION ERROR: Conversion for EmptyStatement not implemented, please report this issue in '' at character 1713
-
-
-                                            Input:
-                                            © 2022 Sage 148
-
-                                             */
+                        return "Succées";
                     }
-
-
-
-
-
                 }
-                return true;
+                return "Succées";
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Erreur : " + ex.Message);
-                return false;
+                return ex.Message;
             }
             finally
             {
                 // Fermeture de la connexion
                 CloseBase(ref oCial);
-
             }
         }
         public static bool OpenBase(ref BSCIALApplication100c BaseCial, string sGcm, string sUid = "<Administrateur>", string sPwd = "")
@@ -691,11 +570,10 @@ namespace Uni.Sage.Infrastructures.Services
             }
             catch (Exception ex)
             {
-                throw ex;
-                return false;
+                throw ;
             }
         }
-        public static void RecupError(IPMProcess mP)
+        public  static string RecupError(IPMProcess mP)
         {
 
             // Boucle sur les erreurs contenues dans la collection 
@@ -706,11 +584,16 @@ namespace Uni.Sage.Infrastructures.Services
                 IFailInfo iFail = mP.Errors[i];
                 // récupération du numéro d'erreur,
                 // de l'indice et de la description de l'erreur 
-                msg += "Code Erreur : " + iFail.ErrorCode + " Indice : " + iFail.Indice + " Description : " + iFail.Text;
+                msg += "Code Erreur : " + iFail.ErrorCode + " Indice : " + iFail.Indice + " Description : " + iFail.Text + "./";
             }
             if (msg.Length > 0)
-                throw new ApplicationException(msg);
+                return msg;
+            else
+            {
+                return "";
+            }
         }
+
         private static bool CloseBase(ref BSCIALApplication100c bCial)
         {
             try

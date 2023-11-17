@@ -36,6 +36,12 @@
     <ProjectReference Include="..\Uni.Sage.Shared\Uni.Sage.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Interop.Objets100cLib">
+      <HintPath>..\Uni.Sage.Infrastructures\obj\Debug\net6.0\Interop.Objets100cLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 

@@ -46,11 +46,11 @@ namespace Uni.Sage.Infrastructures.Services
                     //// Affectation du document au processus
 
                     //pTransfert.Document = mDoc;
-                   
-                     
-                  
-                    IBODepot3 mDepotSource = oCial.FactoryDepot.ReadIntitule("Bijou SA");
-                    IBODepot3 mDepotsCible = oCial.FactoryDepot.ReadIntitule("TRANSITAIRE");
+
+
+
+                    IBODepot3 mDepotSource = oCial.FactoryDepot.ReadIntitule(Request.DepotSource) ;
+                    IBODepot3 mDepotsCible = oCial.FactoryDepot.ReadIntitule(Request.DepotCible);
                     mDoc.DepotDestination = mDepotsCible;
                     mDoc.DepotOrigine = mDepotSource;
                     mDoc.WriteDefault();
