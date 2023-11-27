@@ -1,6 +1,6 @@
 ﻿SELECT A.STD_ARREF        Reference,
        A.STD_ARDESING       Designation,
-       isnull(A.STD_LSNOSERIE,'')      Lot,
+       isnull(A.STD_LSNOSERIE,'')      Lot,A.STD_PEREMPTION DatePeremption,
        ART.FA_CodeFamille CodeFamille,
        SUM(CASE
                WHEN A.STD_DLDATEBL <= getdate() THEN
@@ -324,7 +324,7 @@ FROM (
 
 WHERE A.STD_DENO = @idDepot
 GROUP BY A.STD_ARREF, A.STD_ARDESING,
-         A.STD_LSNOSERIE,ART.FA_CodeFamille
+         A.STD_LSNOSERIE,A.STD_PEREMPTION,ART.FA_CodeFamille
 HAVING SUM(CASE
                WHEN A.STD_DLDATEBL <= getdate() THEN
                    A.STD_QTE

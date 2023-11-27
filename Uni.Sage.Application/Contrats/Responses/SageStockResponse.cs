@@ -11,6 +11,8 @@ namespace Uni.Sage.Application.Contrats.Responses
         public string Reference { get; set; }
         public string Designation { get; set; }
         public string Lot { get; set; }
+        public DateTime DatePeremption { get; set; }
+
         public decimal QteStockDate { get; set; }
         public decimal QteMouvement { get; set; }
         public string CodeFamille { get; set; }
