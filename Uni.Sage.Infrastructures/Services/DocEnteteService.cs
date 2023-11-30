@@ -230,36 +230,70 @@ namespace Uni.Sage.Infrastructures.Services
                               
                                 if (item.ProductId == pLig.Article.AR_Ref && Convert.ToDouble(item.PrixUnitaire) == pLig.DL_PrixUnitaire)
                                 {
-                                    pLig.DL_QteBL = Convert.ToDouble(item.QuantiteScane);
+                                    if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeCmup)
+                                    {
+                                        pLig.DL_QteBL = Convert.ToDouble(item.QuantiteScane);
+                                    }
+                                    //pLig.DL_QteBL = Convert.ToDouble(item.QuantiteScane);
                                     // Si le suivi de l'article est Série/Lot
                                     if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeSerie || pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
                                     {
+
+
+                                       
                                         // Récupération du dépôt de la ligne
                                         IBODepot3 pDepot = pLig.Depot;
                                         // Récupération du dépôt de stockage de l'article
                                         IBOArticleDepot3 pArtDepot = pLig.Article.FactoryArticleDepot.ReadDepot(pDepot);
                                         // Tant que des série/lot doivent être fournis
+                                        //if (pTransfo.UserLotsQteRestantAFournir[pLig] > 0) 
+                                        //{
+                                            // Création d'un Lot/Série pour l'article
+                                            IBOArticleDepotLot pArtDepotLot = (IBOArticleDepotLot)pArtDepot.FactoryArticleDepotLot.Create();
+                                            // Création d'un lot/série pour la ligne
+                                            IUserLot pUserLot = pTransfo.UserLotsToUse[pLig].AddNew();
+                                            if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
+                                            {
+                                                pArtDepotLot.NoSerie = item.StockId;
+                                                pArtDepotLot.DatePeremption = item.DatePeremption;
+                                                // Ajout du lot au processus pour toute la quantité nécessaire
+                                                //UserLot.Set(pArtDepotLot, pTransfo.UserLotsQteRestantAFournir[pLig], pArtDepotLot.Complement);
+                                                pUserLot.Set(pArtDepotLot, Convert.ToDouble(item.QuantiteScane), pArtDepotLot.Complement);
+                                                // Calcul d'un numéro de lot inexistant
+                                                //if (pArtDepotLot.FactoryArticleDepotLot.ExistNoSerie(item.StockId))
+                                                //    item.StockId = pArtDepotLot.FactoryArticleDepotLot.NextNoSerie[item.StockId];
+                                                //// Affectation du numéro de lot
+                                                //pArtDepotLot.NoSerie = item.StockId;
+                                                //// Ajout du lot au processus pour toute la quantité nécessaire
+                                                //pUserLot.Set(pArtDepotLot, pTransfo.UserLotsQteRestantAFournir[pLig], pArtDepotLot.Complement);
+                                                //// Incrémentation du numéro de lot
+                                                //item.StockId = pArtDepotLot.FactoryArticleDepotLot.NextNoSerie[item.StockId];
+                                            }
+                                            
+
+                                        //}
+                                        // Tant que des série/lot doivent être fournis
                                         //if (pTransfo.UserLotsQteRestantAFournir[pLig] > 0)
                                         //{
                                         // Création d'un Lot/Série pour l'article
-                                        IBOArticleDepotLot pArtDepotLot = (IBOArticleDepotLot)pArtDepot.FactoryArticleDepotLot.Create();
-                                        // Création d'un lot/série pour la ligne
-                                        IUserLot pUserLot = pTransfo.UserLotsToUse[pLig].AddNew(); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
+                                        //IBOArticleDepotLot pArtDepotLot = (IBOArticleDepotLot)pArtDepot.FactoryArticleDepotLot.Create();
+                                        //// Création d'un lot/série pour la ligne
+                                        //IUserLot pUserLot = pTransfo.UserLotsToUse[pLig].AddNew(); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
 
-                                        if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
-                                        {
+                                        //if (pLig.Article.AR_SuiviStock == SuiviStockType.SuiviStockTypeLot)
+                                        //{
 
-                                            pArtDepotLot.NoSerie = item.StockId;
-                                            pArtDepotLot.DatePeremption = item.DatePeremption;
-                                            // Ajout du lot au processus pour toute la quantité nécessaire
-                                            //pUserLot.Set(pArtDepotLot, pTransfo.UserLotsQteRestantAFournir[pLig], pArtDepotLot.Complement);
-                                            pUserLot.Set(pArtDepotLot, Convert.ToDouble(item.QuantiteScane), pArtDepotLot.Complement);
+                                        //    pArtDepotLot.NoSerie = item.StockId;
+                                        //    pArtDepotLot.DatePeremption = item.DatePeremption;
+                                        //    // Ajout du lot au processus pour toute la quantité nécessaire
+                                        //    //pUserLot.Set(pArtDepotLot, pTransfo.UserLotsQteRestantAFournir[pLig], pArtDepotLot.Complement);
+                                        //    pUserLot.Set(pArtDepotLot, Convert.ToDouble(item.QuantiteScane), pArtDepotLot.Complement);
 
 
-                                        }
+                                        //}
                                     
                                     }
-
+                                   
                                 }
                             }
                         }
@@ -273,9 +307,10 @@ namespace Uni.Sage.Infrastructures.Services
                         else
                         {
                             // Traitement de récupération des erreurs
-                            var msg= RecupError((IPMProcess)pTransfo);
+                            var msg = RecupError((IPMProcess)pTransfo);
                             return msg;
                         }
+
 
                     }
                     else
